@@ -43,3 +43,8 @@ setInterval(() => {
   });
   active = (active + 1) % promos.length;
 }, 4000);
+
+function cerrarSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.style.display = "none"; // Oculta el menú
+  }

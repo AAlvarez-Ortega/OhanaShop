@@ -67,6 +67,19 @@ header {
   cursor: pointer;
   text-align: left;
 }
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 
 .qr-button {
   margin-top: 40px;

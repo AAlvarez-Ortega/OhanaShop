@@ -75,7 +75,7 @@
 }
 
 .register-form button {
-  background-color: #eee;
+  background-color: #d1d764;
   border: none;
   border-radius: 20px;
   padding: 10px;
@@ -87,3 +87,22 @@
   background-color: #ccc;
 }
 
+/*---------------------------------------------------*/
+
+input:focus {
+  border-bottom: 2px solid #00bcd4;
+  transition: all 0.3s ease;
+}
+
+body {
+  background: linear-gradient(to right, #b8a32e, #ffffff);
+}
+button {
+  background-color: #00bcd4;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+button:hover {
+  background-color: #0097a7;
+}
