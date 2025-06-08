@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar Sesión - Ohana Shop</title>
+  <link rel="stylesheet" href="../css/style-login.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="user-icon" >👤</div>
+  </header>
+
+  <main class="container login">
+    <!-- Botones sociales -->
+    <div class="social-login">
+      <button class="google-btn">
+        <img src="https://th.bing.com/th/id/R.0fa3fe04edf6c0202970f2088edea9e7?rik=joOK76LOMJlBPw&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fgoogle-logo-png-open-2000.png&ehk=0PJJlqaIxYmJ9eOIp9mYVPA4KwkGo5Zob552JPltDMw%3d&risl=&pid=ImgRaw&r=0" alt="G" />
+        Continuar con Google
+      </button>
+      <button class="facebook-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="F" />
+        Continuar con Facebook
+      </button>
+    </div>
+
+    <!-- Formulario tradicional -->
+    <form class="login-form" onsubmit="return validarLogin()">
+      <div class="avatar-icon"><img src="../img/avatar.jpg" alt="Usuario" class="avatar"></div>
+      <input type="email" placeholder="Correo" required />
+      <input type="password" placeholder="Contraseña" required />
+      <button type="submit">Iniciar sesión</button>
+      <div class="links">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+        <a href="../html/index-registro.html">Registro</a>
+      </div>
+    </form>
+  </main>
+
+  <script src="../JS/script-login.js"></script>
+</body>
+</html>
