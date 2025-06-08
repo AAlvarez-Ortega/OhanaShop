@@ -106,3 +106,42 @@ button {
 button:hover {
   background-color: #0097a7;
 }
+.site-footer {
+  background-color: #222;
+  color: #eee;
+  padding: 40px 20px;
+  margin-top: 50px;
+  font-size: 14px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px 0;
+}
+
+.footer-section h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #ff4081;
+}
+
+.footer-section p,
+.footer-section a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 5px 0;
+  display: block;
+}
+
+.footer-section a:hover {
+  color: #fff;
+}
