@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrador - Ohana Shop</title>
+  <link rel="stylesheet" href="css/style-login.css">
+
+</head>
+<body>
+
+  <header>
+    <button id="menu-toggle">&#9776; Menu</button>
+    <span>Admin</span>
+    <div id="user-icon"></div>
+  </header>
+
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h3>Menú</h3>
+          <button id="menu-close" title="Cerrar menú">←</button>
+        </div>
+        <button class="menu-btn">Almacén</button>
+        <button class="menu-btn">Nuevo Producto</button>
+        <button class="menu-btn">Termos</button>
+        <button class="menu-btn">Regreso a clases</button>
+        <button class="menu-btn">Coleccionables</button>
+        <button class="menu-btn">Moda</button>
+        <div class="qr-button">
+          <img src="img/qr.png" alt="Escanear QR">
+        </div>
+      </aside>
+
+
+  <main class="main">
+    <section class="products">
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="JS/script-login.js"></script>
+</body>
+</html>

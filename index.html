@@ -3,41 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrador - Ohana Shop</title>
-  <link rel="stylesheet" href="css/index-style.css">
-
+  <title>Principal - Ohana Shop</title>
+  <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 
   <header>
     <button id="menu-toggle">&#9776; Menu</button>
-    <span>Admin</span>
+    <span>Usuario</span>
     <div id="user-icon"></div>
   </header>
+<!-----------------PROMOCIONES CON ANIMACION------------------------------>
+  <section class="promos-section">
+  <h2>🎉 Promociones Especiales 🎉</h2>
+  <div class="promos-container">
+    <div class="promo-card">
+      <h3>Descuentos por apertura</h3>
+      <p>¡Solo por esta semana!</p>
+    </div>
+    <div class="promo-card highlight">
+      <h3>!Bolsa termica de Stich¡</h3>
+      <p>Oferta exclusiva online</p>
+    </div>
+    <div class="promo-card">
+      <h3>Envío Gratis</h3>
+      <p>En compras mayores a $999</p>
+    </div>
+  </div>
+</section>
+<!----------------Menu-------------------------------->
+  <aside class="sidebar" id="sidebar">
+    <h3>Menú</h3>
+    <button class="menu-btn">Almacén</button>
+    <button class="menu-btn">Nuevo Producto</button>
+    <button class="menu-btn">Termos</button>
+    <button class="menu-btn">Regreso a clases</button>
+    <button class="menu-btn">Coleccionables</button>
+    <button class="menu-btn">Moda</button>
+    <div class="qr-button">
+      <img src="/img/qr.png" alt="Escanear QR">
+    </div> 
+  </aside>
+<!----------------Carrusel-------------------------------->
+<section class="carousel-section">
+  <div class="carousel-container">
+    <button class="carousel-btn prev">&#10094;</button>
 
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <h3>Menú</h3>
-          <button id="menu-close" title="Cerrar menú">←</button>
-        </div>
-        <button class="menu-btn">Almacén</button>
-        <button class="menu-btn">Nuevo Producto</button>
-        <button class="menu-btn">Termos</button>
-        <button class="menu-btn">Regreso a clases</button>
-        <button class="menu-btn">Coleccionables</button>
-        <button class="menu-btn">Moda</button>
-        <div class="qr-button">
-          <img src="img/qr.png" alt="Escanear QR">
-        </div>
-      </aside>
+    <div class="carousel-track">
+      <div class="carousel-item">
+        <img src="img/stich_enojado.JPG" alt="Camisa Stich">
+        <p>Camiseta stich</p>
+      </div>
+      <div class="carousel-item">
+        <img src="img/stich_normal.JPG" alt="Camiseta Stich">
+        <p>Camiseta chill</p>
+      </div>
+      <div class="carousel-item">
+        <img src="img/camisa_culera.JPG" alt="Playera hawai">
+        <p>Stich Hawaii</p>
+      </div>
+      <div class="carousel-item">
+        <img src="img/carro_culero.JPG" alt="Auto coleccionable">
+        <p>Auto de coleccion</p>
+      </div>
+      <!-- ------------------ -->
+    </div>
+
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+
+</section>
+<!-------------CATALOGO DE PRODUCTOS-------------------------->
+<section class="product-catalog">
+  <h2>Nuestros Productos</h2>
+  <div class="product-grid">
+
+    <div class="product-card">
+      <img src="img/animatronico.jpeg" alt="Producto 1">
+      <h3>Audífonos Gamer</h3>
+      <p>$499.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/bochito.jpeg" alt="Producto 2">
+      <h3>Control Inalámbrico</h3>
+      <p>$899.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/BolsaTermica.jpeg" alt="Producto 3">
+      <h3>Juego RPG Deluxe</h3>
+      <p>$1,299.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/cantimplora.png" alt="Producto 2">
+      <h3>Control Inalámbrico</h3>
+      <p>$899.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/MiniMochila.jpeg" alt="Producto 3">
+      <h3>Juego RPG Deluxe</h3>
+      <p>$1,299.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/niñopendejo.jpeg" alt="Producto 2">
+      <h3>Control Inalámbrico</h3>
+      <p>$899.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/peluche.png" alt="Producto 3">
+      <h3>Juego RPG Deluxe</h3>
+      <p>$1,299.00 MXN</p>
+    </div>
+
+    <div class="product-card">
+      <img src="img/termo.png" alt="Producto 3">
+      <h3>Juego RPG Deluxe</h3>
+      <p>$1,299.00 MXN</p>
+    </div>
+
+    
+    
+  </div>
+</section>
+<!---------PIE DE PAGINA--------------------------------->
 
 
-  <main class="main">
-    <section class="products">
-    </section>
-  </main>
+<footer class="site-footer">
+  <div class="footer-container">
+    
+    <div class="footer-section">
+      <h4>Contacto</h4>
+      <p>Email: OhanaShop1911@gmail.com</p>
+      <p>Tel: +52 55 1313 1313</p>
+      <p>Dirección: CDMX, México</p>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <div class="footer-section">
+      <h4>Síguenos</h4>
+      <p><a href="#">Facebook</a></p>
+      <p><a href="#">Instagram</a></p>
+      <p><a href="#">Twitter</a></p>
+    </div>
+
+    <div class="footer-section">
+      <h4>Legal</h4>
+      <p><a href="#">Términos y condiciones</a></p>
+      <p><a href="#">Política de privacidad</a></p>
+      <p>&copy; 2025 OhanaShop</p>
+    </div>
+
+  </div>
+</footer>
+
+<!------------------------------------------------------------------->
+
+
+
   <script src="JS/index.js"></script>
 </body>
 </html>
