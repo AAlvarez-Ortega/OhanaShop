@@ -54,4 +54,11 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   await cargarProductos();
+
+  const closeBtn = document.getElementById('menu-close');
+
+    closeBtn.addEventListener('click', function () {
+      sidebar.classList.remove('show');
+    });
+
 });
