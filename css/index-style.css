@@ -155,3 +155,76 @@ header {
   height: 100%;
   object-fit: contain;
 }
+
+/* --- NUEVO MENÚ FLOTANTE DE USUARIO --- */
+.floating-user-menu {
+  position: fixed;
+  top: 80px;
+  right: 40px;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 280px;
+  padding: 20px;
+  display: none;
+  z-index: 3000;
+  animation: fadeInUp 0.3s ease;
+}
+
+.floating-user-menu.show {
+  display: block;
+}
+
+.floating-user-menu .avatar {
+  width: 60px;
+  height: 60px;
+  background-color: #ddd;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.floating-user-menu hr {
+  border: none;
+  height: 2px;
+  background: #ccc;
+  margin: 10px 0;
+  border-radius: 2px;
+}
+
+.floating-user-menu .info {
+  text-align: center;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.floating-user-menu .info strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.floating-user-menu .logout-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 14px;
+}
+
+.floating-user-menu .logout-btn {
+  background-color: #d1d1d1;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
