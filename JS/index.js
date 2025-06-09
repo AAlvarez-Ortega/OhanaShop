@@ -1,20 +1,20 @@
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener('DOMContentLoaded', async () => {
   const menuToggle = document.getElementById('menu-toggle');
   const sidebar = document.getElementById('sidebar');
   const closeBtn = document.getElementById('menu-close');
   const productsContainer = document.querySelector('.products');
   const userIcon = document.getElementById('user-icon');
   const floatingMenu = document.getElementById('floating-user-menu');
-  const btnNuevoProducto = document.getElementById('btn-nuevo-producto');
+  const btnNuevo = document.getElementById('btn-nuevo-producto');
 
-  const supabaseUrl = 'https://qybynnifyuvbuacanlaa.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk';
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  const supabase = window.supabase.createClient(
+    'https://qybynnifyuvbuacanlaa.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
+  );
 
   let userData = null;
 
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-  if (sessionError) console.error('❌ Error obteniendo sesión:', sessionError);
+  const { data: { session } } = await supabase.auth.getSession();
 
   if (session?.user) {
     const id = session.user.id;
@@ -25,13 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       .single();
 
     if (!error && usuario) {
-      userData = {
-        id: usuario.id,
-        nombre: usuario.nombre,
-        correo: usuario.email,
-        foto: usuario.foto,
-        rol: usuario.rol
-      };
+      userData = usuario;
 
       if (userData.foto) {
         userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
@@ -40,15 +34,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (userData.rol === 'administrador') {
         const btnAlmacen = document.querySelector('.menu-btn[data-role="admin-almacen"]');
         if (btnAlmacen) btnAlmacen.style.display = 'block';
-        if (btnNuevoProducto) {
-          btnNuevoProducto.style.display = 'block';
-          btnNuevoProducto.addEventListener('click', () => {
+        if (btnNuevo) {
+          btnNuevo.style.display = 'block';
+          btnNuevo.addEventListener('click', () => {
             window.location.href = 'scaner.html';
           });
         }
       }
-    } else {
-      console.warn('⚠️ Usuario no encontrado o error:', error);
     }
   }
 
@@ -58,26 +50,22 @@ document.addEventListener('DOMContentLoaded', async function () {
       .select('id, nombre, descripcion, piezas, precio_venta, imagen_url')
       .order('fecha_creacion', { ascending: false });
 
-    if (error) {
-      console.error('❌ Error al obtener productos:', error);
-      return;
+    if (!error && productos) {
+      productsContainer.innerHTML = '';
+      productos.forEach(producto => {
+        const card = document.createElement('div');
+        card.classList.add('product-card');
+        card.innerHTML = `
+          <div class="image-container">
+            <img src="${producto.imagen_url}" alt="${producto.nombre}" />
+          </div>
+          <p><strong>${producto.nombre}</strong></p>
+          <p><strong>$${producto.precio_venta}</strong></p>
+          <p><small>${producto.piezas} piezas</small></p>
+        `;
+        productsContainer.appendChild(card);
+      });
     }
-
-    productsContainer.innerHTML = '';
-
-    productos.forEach(producto => {
-      const card = document.createElement('div');
-      card.classList.add('product-card');
-      card.innerHTML = `
-        <div class="image-container">
-          <img src="${producto.imagen_url}" alt="${producto.nombre}" />
-        </div>
-        <p><strong>${producto.nombre}</strong></p>
-        <p><strong>$${producto.precio_venta}</strong></p>
-        <p><small>${producto.piezas} piezas</small></p>
-      `;
-      productsContainer.appendChild(card);
-    });
   }
 
   await cargarProductos();
@@ -87,17 +75,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
-    renderizarFloatingUserMenu();
+    renderFloatingMenu();
   });
 
-  function renderizarFloatingUserMenu() {
+  function renderFloatingMenu() {
     if (userData) {
       floatingMenu.innerHTML = `
         <div class="avatar"><img src="${userData.foto}" alt="avatar" /></div>
         <hr />
         <div class="info">
           <strong>${userData.nombre}</strong>
-          <span>${userData.correo}</span>
+          <span>${userData.email}</span>
         </div>
         <div class="logout-row">
           <span>Cerrar sesión</span>
