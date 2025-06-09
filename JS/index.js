@@ -8,23 +8,41 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Supabase config
   const supabaseUrl = 'https://qybynnifyuvbuacanlaa.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzNTc5MTAsImV4cCI6MjA2NDkzMzkxMH0.OgVrVZ5-K0nwpFp3uLuT_iw-UNlLtlvuP2E97Gh9TAo';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk';
   const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // Obtener sesión activa
-  const { data: { session } } = await client.auth.getSession();
   let userData = null;
 
-  if (session && session.user) {
-    userData = {
-      nombre: session.user.user_metadata.full_name || 'Usuario',
-      correo: session.user.email,
-      imagen: session.user.user_metadata.avatar_url || null
-    };
-    if (userData.imagen) {
-      userIcon.style.backgroundImage = `url(${userData.imagen})`;
-      userIcon.style.backgroundSize = 'cover';
-      userIcon.style.backgroundPosition = 'center';
+  // Consultar sesión activa
+  const { data: { session } } = await client.auth.getSession();
+
+  if (session?.user) {
+    const id = session.user.id;
+    const { data: usuario, error } = await client
+      .from('usuarios')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (!error && usuario) {
+      userData = {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        correo: usuario.email,
+        foto: usuario.foto,
+        rol: usuario.rol
+      };
+
+      // ✅ Mostrar icono con foto
+      if (userData.foto) {
+        userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+      }
+
+      // ✅ Mostrar botones de admin si aplica
+      if (userData.rol === 'administrador') {
+        document.querySelector('.menu-btn[data-role="admin-almacen"]').style.display = 'block';
+        document.querySelector('.menu-btn[data-role="admin-nuevo"]').style.display = 'block';
+      }
     }
   }
 
@@ -63,56 +81,45 @@ document.addEventListener('DOMContentLoaded', async function () {
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
 
-  // 👤 Menú flotante de usuario
+  // 👤 Menú flotante
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
     renderizarFloatingUserMenu();
   });
 
-      function renderizarFloatingUserMenu() {
-        if (userData) {
-          floatingMenu.innerHTML = `
-            <div class="avatar">
-              <img src="${userData.imagen}" alt="Usuario" />
-            </div>
+  function renderizarFloatingUserMenu() {
+    if (userData) {
+      floatingMenu.innerHTML = `
+        <div class="avatar"><img src="${userData.foto}" alt="avatar" /></div>
+        <hr />
+        <div class="info">
+          <strong>${userData.nombre}</strong>
+          <span>${userData.correo}</span>
+        </div>
+        <div class="logout-row">
+          <span>Cerrar sesión</span>
+          <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
+        </div>
+      `;
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await client.auth.signOut();
+        location.reload();
+      });
+    } else {
+      floatingMenu.innerHTML = `
+        <div class="avatar">👤</div>
+        <hr />
+        <div class="info"><strong>No has iniciado sesión</strong></div>
+        <div class="logout-row">
+          <button class="logout-btn" id="login-btn" title="Iniciar sesión">🔓</button>
+        </div>
+      `;
+      document.getElementById('login-btn').addEventListener('click', () => {
+        window.location.href = 'login.html';
+      });
+    }
+  }
 
-            <hr />
-            <div class="info">
-              <strong>${userData.nombre}</strong>
-              <span>${userData.correo}</span>
-            </div>
-            <div class="logout-row">
-              <span>Cerrar sesión</span>
-              <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
-            </div>
-          `;
-
-          document.getElementById('logout-btn').addEventListener('click', async () => {
-            await client.auth.signOut();
-            location.reload();
-          });
-
-        } else {
-          floatingMenu.innerHTML = `
-            <div class="avatar">👤</div>
-            <hr />
-            <div class="info">
-              <strong>No has iniciado sesión</strong>
-            </div>
-            <div class="logout-row">
-              <button class="logout-btn" id="login-btn" title="Iniciar sesión">🔓</button>
-            </div>
-          `;
-
-          const loginBtn = document.getElementById('login-btn');
-          loginBtn.addEventListener('click', () => {
-            window.location.href = 'login.html';
-          });
-        }
-      }
-
-
-  // Cerrar el menú al hacer clic fuera
   document.addEventListener('click', (e) => {
     if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
       floatingMenu.classList.remove('show');

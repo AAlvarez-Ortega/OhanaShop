@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Configura Supabase
   const supabase = window.supabase.createClient(
     'https://qybynnifyuvbuacanlaa.supabase.co',
-    'TU_CLAVE_PUBLICA_ANON_AQUI'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzNTc5MTAsImV4cCI6MjA2NDkzMzkxMH0.OgVrVZ5-K0nwpFp3uLuT_iw-UNlLtlvuP2E97Gh9TAo'
   );
 
   // Validación de login con formulario (simulado por ahora)
