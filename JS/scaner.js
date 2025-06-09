@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', async () => {
   const codeInput = document.getElementById('codigo');
   const video = document.getElementById('scanner');
+  const btnAceptar = document.getElementById('btn-aceptar');
   const codeReader = new ZXing.BrowserBarcodeReader();
 
   try {
@@ -24,12 +25,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     alert("Error al iniciar el escáner: " + err.message);
   }
 
-  document.getElementById('btn-aceptar').addEventListener('click', () => {
+  btnAceptar.addEventListener('click', () => {
     const codigo = codeInput.value.trim();
     if (codigo) {
-      alert(`Código capturado: ${codigo}`);
+      // Guardar el código en localStorage y redirigir
+      localStorage.setItem('codigo_barras', codigo);
+      window.location.href = 'nuevoproducto.html';
     } else {
-      alert("Escanea o escribe un código.");
+      alert("Por favor escanea o escribe un código primero.");
     }
   });
 });
