@@ -6,19 +6,20 @@ document.addEventListener('DOMContentLoaded', async function () {
   const userIcon = document.getElementById('user-icon');
   const floatingMenu = document.getElementById('floating-user-menu');
 
-  // Supabase config
+  // ✅ Crear cliente Supabase correctamente
   const supabaseUrl = 'https://qybynnifyuvbuacanlaa.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk';
-  const client = supabase.createClient(supabaseUrl, supabaseKey);
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   let userData = null;
 
-  // Consultar sesión activa
-  const { data: { session } } = await client.auth.getSession();
+  // 👤 Obtener sesión activa
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError) console.error('❌ Error obteniendo sesión:', sessionError);
 
   if (session?.user) {
     const id = session.user.id;
-    const { data: usuario, error } = await client
+    const { data: usuario, error } = await supabase
       .from('usuarios')
       .select('*')
       .eq('id', id)
@@ -33,28 +34,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         rol: usuario.rol
       };
 
-      // ✅ Mostrar icono con foto
       if (userData.foto) {
         userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
       }
 
-      // ✅ Mostrar botones de admin si aplica
       if (userData.rol === 'administrador') {
         document.querySelector('.menu-btn[data-role="admin-almacen"]').style.display = 'block';
         document.querySelector('.menu-btn[data-role="admin-nuevo"]').style.display = 'block';
       }
+    } else {
+      console.warn('⚠️ Usuario no encontrado o error:', error);
     }
   }
 
-  // 📦 Cargar productos
+  // 📦 Productos
   async function cargarProductos() {
-    const { data: productos, error } = await client
+    const { data: productos, error } = await supabase
       .from('productos')
       .select('id, nombre, descripcion, piezas, precio_venta, imagen_url')
       .order('fecha_creacion', { ascending: false });
 
     if (error) {
-      console.error('Error al obtener productos:', error);
+      console.error('❌ Error al obtener productos:', error);
       return;
     }
 
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
 
-  // 👤 Menú flotante
+  // 👤 Menú de usuario
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
     renderizarFloatingUserMenu();
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         </div>
       `;
       document.getElementById('logout-btn').addEventListener('click', async () => {
-        await client.auth.signOut();
+        await supabase.auth.signOut();
         location.reload();
       });
     } else {
@@ -118,20 +119,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.location.href = 'login.html';
       });
     }
-
   }
 
+  // 🔒 Cerrar menú si se hace clic fuera
   document.addEventListener('click', (e) => {
     if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
       floatingMenu.classList.remove('show');
     }
   });
 
-
-
-   supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        console.log('✅ Sesión restaurada:', session.user);
-      }
-    });
 });
