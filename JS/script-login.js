@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
   );
 
+  // Detectar entorno y definir redirección
+  const redirectUrl = location.hostname === 'localhost'
+    ? 'http://localhost:3000/index.html'
+    : 'https://aalvarez-ortega.github.io/OhanaShop/index.html';
+
   // Agrega el listener al botón de Google
   const btnGoogle = document.getElementById('btn-google');
   if (!btnGoogle) {
@@ -15,8 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   btnGoogle.addEventListener('click', async () => {
-    const redirectUrl = 'https://aalvarez-ortega.github.io/OhanaShop/index.html';
-
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
