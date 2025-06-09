@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
   );
 
+  // Elementos del formulario
   const idInput = document.getElementById('input-id');
   const nombreInput = document.getElementById('input-nombre');
   const descripcionInput = document.getElementById('input-descripcion');
@@ -15,22 +16,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const previewImg = document.getElementById('preview-img');
   const form = document.getElementById('form-producto');
 
-  // Mostrar código escaneado
+  // Cargar código escaneado desde localStorage
   const codigo = localStorage.getItem('codigo_barras');
-  if (codigo) {
-    idInput.value = codigo;
-  }
+  if (codigo) idInput.value = codigo;
 
-  // Cargar categorías desde Supabase
-  const { data: categorias, error: errorCat } = await supabase.from('categorias').select('*');
-  if (errorCat) {
-    alert('Error cargando categorías');
+  // Cargar categorías
+  const { data: categorias, error: catError } = await supabase
+    .from('categorias')
+    .select('*');
+
+  if (catError) {
+    alert('Error al cargar categorías');
+    console.error(catError);
   } else {
     categorias.forEach(cat => {
-      const opt = document.createElement('option');
-      opt.value = cat.id;
-      opt.textContent = cat.nombre;
-      categoriaSelect.appendChild(opt);
+      const option = document.createElement('option');
+      option.value = cat.id;
+      option.textContent = cat.nombre;
+      categoriaSelect.appendChild(option);
     });
   }
 
@@ -43,30 +46,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // Subir producto
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const file = imgInput.files[0];
-    if (!file) return alert('Sube una imagen');
-
-    const ext = file.name.split('.').pop();
-    const imgPath = `${Date.now()}.${ext}`;
-    const { error: imgError } = await supabase.storage
-      .from('productos')
-      .upload(imgPath, file, { upsert: true });
-
-    if (imgError) {
-      alert('Error subiendo imagen');
+    if (!file || file.size === 0) {
+      alert("La imagen no es válida o está vacía");
       return;
     }
 
-    const { data: sessionData } = await supabase.auth.getSession();
-    const userId = sessionData?.session?.user?.id;
+    const fileExt = file.name.split('.').pop();
+    const fileName = crypto.randomUUID ? crypto.randomUUID() : Date.now();
+    const imgPath = `productos/${fileName}.${fileExt}`;
 
-    const { data: imgUrlData } = supabase.storage
+    const { error: uploadError } = await supabase.storage
+      .from('productos')
+      .upload(imgPath, file, {
+        upsert: true,
+        contentType: file.type
+      });
+
+    if (uploadError) {
+      alert('Error subiendo imagen');
+      console.error(uploadError);
+      return;
+    }
+
+    // Obtener URL pública
+    const { data: urlData } = supabase
+      .storage
       .from('productos')
       .getPublicUrl(imgPath);
+    const imagenUrl = urlData?.publicUrl ?? '';
 
+    // Obtener usuario autenticado
+    const { data: session } = await supabase.auth.getSession();
+    const userId = session?.session?.user?.id;
+
+    // Armar objeto producto
     const producto = {
       id: idInput.value.trim(),
       nombre: nombreInput.value.trim(),
@@ -75,18 +93,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       precio_compra: parseFloat(compraInput.value),
       precio_venta: parseFloat(ventaInput.value),
       categoria_id: categoriaSelect.value,
-      imagen_url: imgUrlData.publicUrl,
+      imagen_url: imagenUrl,
       creado_por: userId,
       fecha_creacion: new Date().toISOString()
     };
 
-    const { error: insertError } = await supabase.from('productos').insert([producto]);
+    // Insertar en base de datos
+    const { error: insertError } = await supabase
+      .from('productos')
+      .insert([producto]);
 
     if (insertError) {
       alert('Error al guardar el producto');
       console.error(insertError);
     } else {
-      alert('Producto registrado correctamente');
+      alert('✅ Producto registrado correctamente');
+      localStorage.removeItem('codigo_barras');
       window.location.href = 'index.html';
     }
   });
