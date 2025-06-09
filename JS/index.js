@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         window.location.href = 'login.html';
       });
     }
+
   }
 
   document.addEventListener('click', (e) => {
@@ -125,4 +126,12 @@ document.addEventListener('DOMContentLoaded', async function () {
       floatingMenu.classList.remove('show');
     }
   });
+
+
+
+   supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        console.log('✅ Sesión restaurada:', session.user);
+      }
+    });
 });

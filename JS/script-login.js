@@ -15,10 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   btnGoogle.addEventListener('click', async () => {
+    const redirectUrl = 'https://aalvarez-ortega.github.io/OhanaShop/index.html';
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://aalvarez-ortega.github.io/OhanaShop/index.html'
+        redirectTo: redirectUrl
       }
     });
 
