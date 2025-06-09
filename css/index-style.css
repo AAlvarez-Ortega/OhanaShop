@@ -176,16 +176,24 @@ header {
 }
 
 .floating-user-menu .avatar {
-  width: 60px;
-  height: 60px;
-  background-color: #ddd;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
   border-radius: 50%;
-  margin: 0 auto 15px;
-  font-size: 30px;
+  background-color: #ccc;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.floating-user-menu .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 
 .floating-user-menu hr {
   border: none;

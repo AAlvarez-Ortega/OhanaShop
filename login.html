@@ -9,13 +9,12 @@
 <body>
   <header class="top-bar">
     <div class="user-icon" onclick="window.location.href='index.html'" title="Volver a inicio">←</div>
-
   </header>
 
   <main class="container login">
     <!-- Botones sociales -->
     <div class="social-login">
-      <button class="google-btn">
+      <button class="google-btn" id="btn-google">
         <img src="https://th.bing.com/th/id/R.0fa3fe04edf6c0202970f2088edea9e7?rik=joOK76LOMJlBPw&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fgoogle-logo-png-open-2000.png&ehk=0PJJlqaIxYmJ9eOIp9mYVPA4KwkGo5Zob552JPltDMw%3d&risl=&pid=ImgRaw&r=0" alt="G" />
         Continuar con Google
       </button>
@@ -38,6 +37,8 @@
     </form>
   </main>
 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="JS/script-login.js"></script>
 </body>
 </html>

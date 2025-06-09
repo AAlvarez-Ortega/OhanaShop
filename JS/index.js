@@ -11,10 +11,22 @@ document.addEventListener('DOMContentLoaded', async function () {
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzNTc5MTAsImV4cCI6MjA2NDkzMzkxMH0.OgVrVZ5-K0nwpFp3uLuT_iw-UNlLtlvuP2E97Gh9TAo';
   const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-  // 👉 Simulación (cámbialo luego por una sesión real)
-  const sesionIniciada = false;
-  const userData = null;
+  // Obtener sesión activa
+  const { data: { session } } = await client.auth.getSession();
+  let userData = null;
 
+  if (session && session.user) {
+    userData = {
+      nombre: session.user.user_metadata.full_name || 'Usuario',
+      correo: session.user.email,
+      imagen: session.user.user_metadata.avatar_url || null
+    };
+    if (userData.imagen) {
+      userIcon.style.backgroundImage = `url(${userData.imagen})`;
+      userIcon.style.backgroundSize = 'cover';
+      userIcon.style.backgroundPosition = 'center';
+    }
+  }
 
   // 📦 Cargar productos
   async function cargarProductos() {
@@ -58,9 +70,12 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
       function renderizarFloatingUserMenu() {
-        if (sesionIniciada) {
+        if (userData) {
           floatingMenu.innerHTML = `
-            <div class="avatar">👤</div>
+            <div class="avatar">
+              <img src="${userData.imagen}" alt="Usuario" />
+            </div>
+
             <hr />
             <div class="info">
               <strong>${userData.nombre}</strong>
@@ -68,9 +83,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             </div>
             <div class="logout-row">
               <span>Cerrar sesión</span>
-              <button class="logout-btn" title="Cerrar sesión">🔌</button>
+              <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
             </div>
           `;
+
+          document.getElementById('logout-btn').addEventListener('click', async () => {
+            await client.auth.signOut();
+            location.reload();
+          });
+
         } else {
           floatingMenu.innerHTML = `
             <div class="avatar">👤</div>
@@ -83,7 +104,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             </div>
           `;
 
-          // 🔁 Después de insertar el botón, agregamos el listener
           const loginBtn = document.getElementById('login-btn');
           loginBtn.addEventListener('click', () => {
             window.location.href = 'login.html';
