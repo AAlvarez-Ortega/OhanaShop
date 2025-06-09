@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (codigo) {
       // Guardar el código en localStorage y redirigir
       localStorage.setItem('codigo_barras', codigo);
-      window.location.href = 'nuevoproducto.html';
+      window.location.href ='nuevoproducto.html';
     } else {
       alert("Por favor escanea o escribe un código primero.");
     }
