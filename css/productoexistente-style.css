@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background-color: #fff;
 }
 
@@ -15,18 +15,27 @@ header {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 20px;
   gap: 30px;
+  padding: 20px;
 }
 
 .card {
   background: #f5f5f5;
-  padding: 20px;
+  padding: 25px;
   border-radius: 25px;
-  max-width: 400px;
+  max-width: 450px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #333;
 }
 
 input, textarea {
@@ -36,25 +45,62 @@ input, textarea {
   padding: 12px;
   font-size: 14px;
   resize: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 70px;
 }
 
 button {
-  background-color: #d9d9d9;
+  background-color: #7A003C;
+  color: white;
   padding: 10px;
   border-radius: 15px;
   border: none;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #5a002e;
 }
 
 .buttons {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+}
+
+.preview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .preview img {
-  width: 250px;
-  height: auto;
-  border-radius: 20px;
-  object-fit: cover;
+  width: 100%;
+  max-width: 650px;
+  border-radius: 25px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  object-fit: contain;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+  .preview img {
+    max-width: 100%;
+  }
 }

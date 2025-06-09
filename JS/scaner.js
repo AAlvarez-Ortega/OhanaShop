@@ -1,5 +1,5 @@
-window.addEventListener('DOMContentLoaded', async () => {
-  const supabase = window.supabase.createClient(
+export default async function scaner(BrowserBarcodeReader, createClient) {
+  const supabase = createClient(
     'https://qybynnifyuvbuacanlaa.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
   );
@@ -7,7 +7,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const codeInput = document.getElementById('codigo');
   const video = document.getElementById('scanner');
   const btnAceptar = document.getElementById('btn-aceptar');
-  const codeReader = new ZXing.BrowserBarcodeReader();
+  const codeReader = new BrowserBarcodeReader();
 
   try {
     const devices = await codeReader.getVideoInputDevices();
@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     codeReader.decodeFromVideoDevice(selectedDeviceId, video, (result, err) => {
       if (result) {
         codeInput.value = result.getText();
-        codeReader.reset(); // Detener escaneo después de éxito
+        codeReader.reset(); // detener escaneo tras éxito
       }
     });
   } catch (err) {
@@ -38,10 +38,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // Guardar el código en localStorage
     localStorage.setItem('codigo_barras', codigo);
 
-    // Consultar si el producto existe
     const { data, error } = await supabase
       .from('productos')
       .select('id')
@@ -49,12 +47,9 @@ window.addEventListener('DOMContentLoaded', async () => {
       .single();
 
     if (data) {
-      // Producto encontrado → redirigir a vista producto existente
       window.location.href = 'productoexistente.html';
     } else {
-      // Producto no encontrado → redirigir a nuevo producto
       window.location.href = 'nuevoproducto.html';
     }
   });
-});
-
+}

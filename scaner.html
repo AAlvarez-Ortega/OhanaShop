@@ -21,7 +21,14 @@
 
   </main>
 
-    <script src="https://unpkg.com/@zxing/library@latest"></script>
-    <script src="JS/scaner.js"></script>
+  <script type="module">
+  import { BrowserBarcodeReader } from "https://cdn.jsdelivr.net/npm/@zxing/library@latest/+esm";
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  import scaner from './JS/scaner.js';
+
+  scaner(BrowserBarcodeReader, createClient);
+</script>
+
+
 </body>
 </html>

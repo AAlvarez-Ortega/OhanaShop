@@ -14,12 +14,24 @@
   <main class="container">
     <div class="card">
       <h2>Producto Existente</h2>
-      <input type="text" id="id" placeholder="ID (Escaneado)" readonly>
-      <input type="text" id="nombre" placeholder="Nombre">
-      <textarea id="descripcion" placeholder="Breve Descripción"></textarea>
-      <input type="number" id="piezas" placeholder="Pz en Existencia" readonly>
-      <input type="number" id="precio_compra" placeholder="Precio Compra" readonly>
-      <input type="number" id="precio_venta" placeholder="Precio Venta">
+
+      <label for="id">Código de barras</label>
+      <input type="text" id="id" readonly>
+
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre">
+
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion"></textarea>
+
+      <label for="piezas">Piezas en existencia</label>
+      <input type="number" id="piezas" readonly>
+
+      <label for="precio_compra">Precio de compra</label>
+      <input type="number" id="precio_compra" readonly>
+
+      <label for="precio_venta">Precio de venta</label>
+      <input type="number" id="precio_venta">
 
       <div class="buttons">
         <button id="editar">Editar</button>
@@ -27,7 +39,9 @@
       </div>
 
       <h3>Agregar Inventario</h3>
-      <input type="number" id="nuevas_piezas" placeholder="Num Pz">
+
+      <label for="nuevas_piezas">Cantidad a agregar</label>
+      <input type="number" id="nuevas_piezas">
       <button id="agregar_piezas">Agregar</button>
     </div>
 
