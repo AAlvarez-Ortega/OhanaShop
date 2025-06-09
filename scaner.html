@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escanear Código</title>
+  <link rel="stylesheet" href="css/scaner-style.css" />
+</head>
+<body>
+  <header>
+    <button onclick="window.location.href='index.html'" class="back-btn">←</button>
+  </header>
+
+  <main class="container">
+    <h2>Escanear nuevo producto</h2>
+    <div id="scanner-container">
+      <video id="scanner" autoplay muted></video>
+    </div>
+    <input type="text" id="codigo" placeholder="O Escribe el código aquí" />
+    <button id="btn-aceptar">Aceptar</button>
+  </main>
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <script src="JS/scaner.js"></script>
+</body>
+</html>

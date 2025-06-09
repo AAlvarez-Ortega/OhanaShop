@@ -5,15 +5,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   const productsContainer = document.querySelector('.products');
   const userIcon = document.getElementById('user-icon');
   const floatingMenu = document.getElementById('floating-user-menu');
+  const btnNuevoProducto = document.getElementById('btn-nuevo-producto');
 
-  // ✅ Crear cliente Supabase correctamente
   const supabaseUrl = 'https://qybynnifyuvbuacanlaa.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk';
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   let userData = null;
 
-  // 👤 Obtener sesión activa
   const { data: { session }, error: sessionError } = await supabase.auth.getSession();
   if (sessionError) console.error('❌ Error obteniendo sesión:', sessionError);
 
@@ -39,15 +38,20 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
 
       if (userData.rol === 'administrador') {
-        document.querySelector('.menu-btn[data-role="admin-almacen"]').style.display = 'block';
-        document.querySelector('.menu-btn[data-role="admin-nuevo"]').style.display = 'block';
+        const btnAlmacen = document.querySelector('.menu-btn[data-role="admin-almacen"]');
+        if (btnAlmacen) btnAlmacen.style.display = 'block';
+        if (btnNuevoProducto) {
+          btnNuevoProducto.style.display = 'block';
+          btnNuevoProducto.addEventListener('click', () => {
+            window.location.href = 'scaner.html';
+          });
+        }
       }
     } else {
       console.warn('⚠️ Usuario no encontrado o error:', error);
     }
   }
 
-  // 📦 Productos
   async function cargarProductos() {
     const { data: productos, error } = await supabase
       .from('productos')
@@ -78,11 +82,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   await cargarProductos();
 
-  // 🎛 Menú lateral
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
 
-  // 👤 Menú de usuario
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
     renderizarFloatingUserMenu();
@@ -121,11 +123,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
-  // 🔒 Cerrar menú si se hace clic fuera
   document.addEventListener('click', (e) => {
     if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
       floatingMenu.classList.remove('show');
     }
   });
-
 });
