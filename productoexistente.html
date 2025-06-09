@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto existente</title>
+  <link rel="stylesheet" href="css/productoexistente-style.css">
+</head>
+<body>
+  <header>
+    <button onclick="window.location.href='index.html'">←</button>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Producto Existente</h2>
+      <input type="text" id="id" placeholder="ID (Escaneado)" readonly>
+      <input type="text" id="nombre" placeholder="Nombre">
+      <textarea id="descripcion" placeholder="Breve Descripción"></textarea>
+      <input type="number" id="piezas" placeholder="Pz en Existencia" readonly>
+      <input type="number" id="precio_compra" placeholder="Precio Compra" readonly>
+      <input type="number" id="precio_venta" placeholder="Precio Venta">
+
+      <div class="buttons">
+        <button id="editar">Editar</button>
+        <button id="eliminar">Eliminar</button>
+      </div>
+
+      <h3>Agregar Inventario</h3>
+      <input type="number" id="nuevas_piezas" placeholder="Num Pz">
+      <button id="agregar_piezas">Agregar</button>
+    </div>
+
+    <div class="preview">
+      <img id="imagen_producto" src="" alt="Imagen del producto">
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/productoexistente.js"></script>
+</body>
+</html>
