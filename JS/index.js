@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btnAlmacen) {
           btnAlmacen.style.display = 'block';
           btnAlmacen.addEventListener('click',() =>{
-            window.location.href = 'scaner.html';
+            window.location.href = 'almacen.html';
           });
         }
         if (btnNuevo) {
