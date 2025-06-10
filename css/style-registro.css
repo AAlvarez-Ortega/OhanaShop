@@ -1,5 +1,7 @@
 
-
+body{
+  background-color: hsl(255, 40%, 94%);
+}
 * {
   margin: 0;
   padding: 0;
