@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background-color: #fff;
+  background-color: #ececc7;
 }
 
 header {
@@ -52,7 +52,7 @@ video#scanner {
 }
 
 input#codigo {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   font-size: 16px;
   border-radius: 8px;
@@ -61,10 +61,10 @@ input#codigo {
 }
 
 button#btn-aceptar {
-  width: 100%;
+  width: 85%;
   padding: 10px;
   font-size: 16px;
-  background-color: #7a003c;
+  background-color: #0000FF;
   color: white;
   border: none;
   border-radius: 10px;
