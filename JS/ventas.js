@@ -64,6 +64,9 @@ async function buscarProducto(codigo) {
   resultado.dataset.piezas = data.piezas;
   resultado.style.display = 'block';
   document.getElementById('imagen_producto').src = data.imagen_url;
+
+  // Scroll automático hacia el resultado
+  resultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function venderProducto() {
@@ -93,6 +96,10 @@ async function venderProducto() {
   } else {
     alert("Venta registrada con éxito.");
     await buscarProducto(id);
+    resultado.style.display = 'none';
+    iniciarEscaner();
+    codigoInput.value = '';
+
   }
 }
 
