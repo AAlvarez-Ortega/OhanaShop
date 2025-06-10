@@ -6,14 +6,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   const userIcon = document.getElementById('user-icon');
   const floatingMenu = document.getElementById('floating-user-menu');
   const btnNuevo = document.getElementById('btn-nuevo-producto');
+  const btnAlmacen = document.getElementById('btn-almacen');
+  const btnCategorias = document.getElementById('btn-categorias');
+  const btnVentas = document.getElementById('btn-ventas');
+  const filtroCategorias = document.getElementById('filtro-categorias');
 
   const supabase = window.supabase.createClient(
     'https://qybynnifyuvbuacanlaa.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
+     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
   );
 
   let userData = null;
 
+  // Mostrar filtro de categorías siempre
+  if (filtroCategorias) {
+    filtroCategorias.style.display = 'block';
+    const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
+    if (!error && categorias) {
+      filtroCategorias.innerHTML = `<option value="todos">Todas las categorías</option>`;
+      categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat.id;
+        option.textContent = cat.nombre;
+        filtroCategorias.appendChild(option);
+      });
+
+      filtroCategorias.addEventListener('change', (e) => {
+        const categoriaSeleccionada = e.target.value;
+        cargarProductos(categoriaSeleccionada);
+      });
+    }
+  }
+
+  // Cargar productos de forma global
+  await cargarProductos();
+
+  // Verificar sesión
   const { data: { session } } = await supabase.auth.getSession();
 
   if (session?.user) {
@@ -32,68 +60,39 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       if (userData.rol === 'administrador') {
-          // Almacén
-          const btnAlmacen = document.getElementById('btn-almacen');
-          if (btnAlmacen) {
-            btnAlmacen.style.display = 'block';
-            btnAlmacen.addEventListener('click', () => {
-              window.location.href = 'almacen.html';
-            });
-          }
-
-          // Nuevo Producto
-          if (btnNuevo) {
-            btnNuevo.style.display = 'block';
-            btnNuevo.addEventListener('click', () => {
-              window.location.href = 'scaner.html';
-            });
-          }
-
-          // Categorías
-          const btnCategorias = document.getElementById('btn-categorias');
-          if (btnCategorias) {
-            btnCategorias.style.display = 'block';
-            btnCategorias.addEventListener('click', () => {
-              window.location.href = 'categorias.html'; // Cambia según el archivo real
-            });
-          }
-
-          // Ventas
-          const btnVentas = document.getElementById('btn-ventas');
-          if (btnVentas) {
-            btnVentas.style.display = 'block';
-            btnVentas.addEventListener('click', () => {
-              window.location.href = 'ventas.html'; // Cambia según el archivo real
-            });
-          }
-
-        } else {
-          // Cliente: mostrar combo de categorías
-          const filtroCategorias = document.getElementById('filtro-categorias');
-          if (filtroCategorias) {
-            filtroCategorias.style.display = 'block';
-
-            // Cargar dinámicamente las categorías
-            const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
-            if (!error && categorias) {
-              categorias.forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat.id;
-                option.textContent = cat.nombre;
-                filtroCategorias.appendChild(option);
-              });
-            }
-          }
+        if (btnAlmacen) {
+          btnAlmacen.style.display = 'block';
+          btnAlmacen.addEventListener('click', () => window.location.href = 'almacen.html');
         }
 
+        if (btnNuevo) {
+          btnNuevo.style.display = 'block';
+          btnNuevo.addEventListener('click', () => window.location.href = 'scaner.html');
+        }
+
+        if (btnCategorias) {
+          btnCategorias.style.display = 'block';
+          btnCategorias.addEventListener('click', () => window.location.href = 'categorias.html');
+        }
+
+        if (btnVentas) {
+          btnVentas.style.display = 'block';
+          btnVentas.addEventListener('click', () => window.location.href = 'ventas.html');
+        }
+
+        // Ocultar filtro si es admin
+        if (filtroCategorias) filtroCategorias.style.display = 'none';
+      }
     }
   }
 
-  async function cargarProductos() {
-    const { data: productos, error } = await supabase
-      .from('productos')
-      .select('id, nombre, descripcion, piezas, precio_venta, imagen_url')
-      .order('fecha_creacion', { ascending: false });
+  async function cargarProductos(filtroCategoria = null) {
+    let query = supabase.from('productos').select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+    if (filtroCategoria && filtroCategoria !== 'todos') {
+      query = query.eq('categoria_id', filtroCategoria);
+    }
+
+    const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
 
     if (!error && productos) {
       productsContainer.innerHTML = '';
@@ -112,8 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
   }
-
-  await cargarProductos();
 
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
@@ -161,5 +158,4 @@ document.addEventListener('DOMContentLoaded', async () => {
       floatingMenu.classList.remove('show');
     }
   });
-
 });
