@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar Venta</title>
+  <link rel="stylesheet" href="css/ventas-style.css" />
+</head>
+<body>
+  <header>
+    <button onclick="window.location.href='index.html'" class="back-btn">←</button>
+    <h2>Ventas</h2>
+  </header>
+
+  <main>
+    <!-- Escáner -->
+    <section class="scanner-box">
+      <video id="scanner" autoplay muted></video>
+      <input type="text" id="codigo" placeholder="O escribe el código aquí" />
+      <button id="btn-aceptar">Buscar producto</button>
+    </section>
+
+    <!-- Producto escaneado -->
+  <section class="resultado" id="resultado" style="display:none;">
+  <div class="producto-card">
+    <div class="info-con-imagen">
+      <div class="info-texto">
+        <h3 id="nombre"></h3>
+        <p id="descripcion"></p>
+        <p><strong>Precio: </strong>$<span id="precio_venta"></span></p>
+        <p><strong>Existencia: </strong><span id="piezas"></span> pz</p>
+      </div>
+      <div class="imagen-circulo">
+        <img id="imagen_producto" src="" alt="Imagen producto" />
+      </div>
+    </div>
+    <input type="number" id="cantidad_vender" placeholder="Pz a vender" min="1" />
+    <button id="btn-vender">Vender</button>
+  </div>
+</section>
+
+  </main>
+  
+  <script type="module" src="./JS/ventas.js"></script>
+
+
+  </body>
+</html>

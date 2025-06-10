@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #fff;
+}
+
+header {
+  background-color: #d9d9d9;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+main {
+  padding: 10px 20px;
+}
+
+.scanner-box {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  position: relative;
+  top: 20px;
+}
+
+video#scanner {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+input#codigo {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+button#btn-aceptar {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #7a003c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.resultado {
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.producto-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.producto-card p {
+  margin: 5px 0;
+}
+
+.producto-card input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#btn-vender {
+  margin-top: 10px;
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.info-con-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.info-texto {
+  flex: 1;
+}
+
+.imagen-circulo {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-circulo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
