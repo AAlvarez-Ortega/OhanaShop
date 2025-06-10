@@ -7,7 +7,6 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
 );
 
-// Elementos del DOM
 const video = document.getElementById('scanner');
 const codigoInput = document.getElementById('codigo');
 const btnAceptar = document.getElementById('btn-aceptar');
@@ -19,10 +18,12 @@ const piezasEl = document.getElementById('piezas');
 const cantidadInput = document.getElementById('cantidad_vender');
 const btnVender = document.getElementById('btn-vender');
 
-// Inicializar lector de códigos de barras
+const filtroCat = document.getElementById('filtro-categorias');
+const buscarNombre = document.getElementById('buscar-nombre');
+const lista = document.getElementById('productos-lista');
+
 const codeReader = new BrowserBarcodeReader();
 
-// Función para iniciar el escáner
 async function iniciarEscaner() {
   try {
     const devices = await codeReader.getVideoInputDevices();
@@ -42,7 +43,6 @@ async function iniciarEscaner() {
   }
 }
 
-// Función para buscar y mostrar el producto
 async function buscarProducto(codigo) {
   const { data, error } = await supabase
     .from('productos')
@@ -56,7 +56,6 @@ async function buscarProducto(codigo) {
     return;
   }
 
-  // Mostrar datos en la tarjeta
   nombreEl.textContent = data.nombre;
   descripcionEl.textContent = data.descripcion;
   precioEl.textContent = data.precio_venta;
@@ -65,10 +64,8 @@ async function buscarProducto(codigo) {
   resultado.dataset.piezas = data.piezas;
   resultado.style.display = 'block';
   document.getElementById('imagen_producto').src = data.imagen_url;
-
 }
 
-// Función para procesar la venta
 async function venderProducto() {
   const id = resultado.dataset.id;
   const piezasDisponibles = parseInt(resultado.dataset.piezas);
@@ -95,11 +92,10 @@ async function venderProducto() {
     alert("Error al vender: " + error.message);
   } else {
     alert("Venta registrada con éxito.");
-    await buscarProducto(id); // Actualizar datos
+    await buscarProducto(id);
   }
 }
 
-// Eventos
 btnAceptar.addEventListener('click', () => {
   const codigo = codigoInput.value.trim();
   if (codigo) buscarProducto(codigo);
@@ -107,6 +103,48 @@ btnAceptar.addEventListener('click', () => {
 
 btnVender.addEventListener('click', venderProducto);
 
-// Arrancar escáner
+// NUEVO: cargar productos
+let productos = [];
+
+async function cargarProductos() {
+  const { data } = await supabase.from('productos').select('*');
+  productos = data;
+  mostrarProductos();
+}
+
+async function cargarCategorias() {
+  const { data } = await supabase.from('categorias').select('*');
+  data.forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat.id;
+    option.textContent = cat.nombre;
+    filtroCat.appendChild(option);
+  });
+}
+
+function mostrarProductos() {
+  const texto = buscarNombre.value.toLowerCase();
+  const categoria = filtroCat.value;
+
+  const filtrados = productos.filter(p => {
+    const nombreCoincide = p.nombre.toLowerCase().includes(texto);
+    const categoriaCoincide = categoria === 'todas' || p.categoria_id == categoria;
+    return nombreCoincide && categoriaCoincide;
+  });
+
+  lista.innerHTML = '';
+  filtrados.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'producto-item';
+    div.textContent = `${p.nombre} ($${p.precio_venta})`;
+    div.addEventListener('click', () => buscarProducto(p.id));
+    lista.appendChild(div);
+  });
+}
+
+filtroCat.addEventListener('change', mostrarProductos);
+buscarNombre.addEventListener('input', mostrarProductos);
 
 iniciarEscaner();
+cargarProductos();
+cargarCategorias();

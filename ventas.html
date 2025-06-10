@@ -12,37 +12,46 @@
     <h2>Ventas</h2>
   </header>
 
-  <main>
-    <!-- Escáner -->
+  <main class="ventas-grid">
+    <section class="resultado" id="resultado" style="display:none;">
+        <div class="producto-card">
+          <div class="info-con-imagen">
+            <div class="info-texto">
+              <h3 id="nombre"></h3>
+              <p id="descripcion"></p>
+              <p><strong>Precio: </strong>$<span id="precio_venta"></span></p>
+              <p><strong>Existencia: </strong><span id="piezas"></span> pz</p>
+            </div>
+            <div class="imagen-circulo">
+              <img id="imagen_producto" src="" alt="Imagen producto" />
+            </div>
+          </div>
+          <input type="number" id="cantidad_vender" placeholder="Pz a vender" min="1" />
+          <button id="btn-vender">Vender</button>
+        </div>
+      </section>
+
+    <!-- Columna Escáner -->
     <section class="scanner-box">
       <video id="scanner" autoplay muted></video>
       <input type="text" id="codigo" placeholder="O escribe el código aquí" />
       <button id="btn-aceptar">Buscar producto</button>
     </section>
 
-    <!-- Producto escaneado -->
-  <section class="resultado" id="resultado" style="display:none;">
-  <div class="producto-card">
-    <div class="info-con-imagen">
-      <div class="info-texto">
-        <h3 id="nombre"></h3>
-        <p id="descripcion"></p>
-        <p><strong>Precio: </strong>$<span id="precio_venta"></span></p>
-        <p><strong>Existencia: </strong><span id="piezas"></span> pz</p>
+    <!-- Columna derecha: Lista de productos -->
+    <section class="lista-productos">
+      <div class="filtros">
+        <select id="filtro-categorias">
+          <option value="todas">Todas las categorías</option>
+        </select>
+        <input type="text" id="buscar-nombre" placeholder="Buscar por nombre..." />
       </div>
-      <div class="imagen-circulo">
-        <img id="imagen_producto" src="" alt="Imagen producto" />
+      <div id="productos-lista">
+        <!-- Aquí se insertan los productos dinámicamente -->
       </div>
-    </div>
-    <input type="number" id="cantidad_vender" placeholder="Pz a vender" min="1" />
-    <button id="btn-vender">Vender</button>
-  </div>
-</section>
-
+    </section>
   </main>
-  
+
   <script type="module" src="./JS/ventas.js"></script>
-
-
-  </body>
+</body>
 </html>
