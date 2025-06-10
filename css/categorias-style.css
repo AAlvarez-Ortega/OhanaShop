@@ -11,6 +11,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .topbar h1 {
@@ -31,19 +32,23 @@ body {
 
 .container {
   padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 form {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 }
 
 form input[type="text"] {
-  flex-grow: 1;
+  flex: 1 1 200px;
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
+  min-width: 0;
 }
 
 form button {
@@ -53,6 +58,7 @@ form button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 #mensaje {
@@ -72,15 +78,16 @@ form button {
   padding: 10px 15px;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 10px;
 }
 
 #lista-categorias li input[type="text"] {
   border: none;
   font-size: 16px;
-  flex-grow: 1;
-  margin-right: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 #lista-categorias li button {
@@ -90,4 +97,30 @@ form button {
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  form button {
+    width: 100%;
+  }
+
+  #lista-categorias li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #lista-categorias li button {
+    width: 100%;
+  }
 }
