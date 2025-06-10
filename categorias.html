@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Agregar Categoría | OhanaShop</title>
-  <link rel="stylesheet" href="css/categorias-style.css">
+  <meta charset="UTF-8" />
+  <title>Categorías | OhanaShop</title>
+  <link rel="stylesheet" href="css/categorias-style.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+  <header class="topbar">
+    <button onclick="history.back()">⬅ Volver</button>
+    <h1>Categorías</h1>
+  </header>
 
   <div class="container">
-    <h1>Agregar nueva categoría</h1>
     <form id="form-categoria">
-      <input type="text" id="nombre" placeholder="Nombre de la categoría" required />
-      <button type="submit">Guardar</button>
+      <input type="text" id="nombre" placeholder="Nueva categoría" required />
+      <button type="submit" id="btn-submit">Guardar</button>
     </form>
+
     <p id="mensaje"></p>
+
+    <ul id="lista-categorias"></ul>
   </div>
 
   <script src="JS/categorias.js"></script>
