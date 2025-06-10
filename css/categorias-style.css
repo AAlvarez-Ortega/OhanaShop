@@ -6,7 +6,7 @@ body {
 
 .topbar {
   background-color: #F5F1DA;
-  color: white;
+  color: rgb(55, 1, 1);
   padding: 15px 20px;
   display: flex;
   align-items: center;
@@ -21,8 +21,8 @@ body {
 }
 
 .topbar button {
-  background: white;
-  color: black;
+  background: #8e8ef1;
+  color: rgb(255, 255, 255);
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
@@ -53,7 +53,7 @@ form input[type="text"] {
 
 form button {
   padding: 10px 20px;
-  background-color: #939394;
+  background-color:#8e8ef1;
   color: white;
   border: none;
   border-radius: 10px;
@@ -91,7 +91,7 @@ form button {
 }
 
 #lista-categorias li button {
-  background-color: #939394;
+  background-color: #8e8ef1;
   color: white;
   border: none;
   padding: 6px 12px;

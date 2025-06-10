@@ -54,7 +54,7 @@ textarea {
 }
 
 button {
-  background-color: #7A003C;
+  background-color:#8e8ef1;
   color: white;
   padding: 10px;
   border-radius: 15px;
@@ -65,7 +65,7 @@ button {
 }
 
 button:hover {
-  background-color: #5a002e;
+  background-color: #8e8ef1;
 }
 
 .buttons {

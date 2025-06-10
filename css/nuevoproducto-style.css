@@ -75,7 +75,7 @@ form {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #555;
+  color: #8e8ef1;
 }
 
 input,
@@ -132,7 +132,7 @@ input[type="file"] {
 
 /* BOTÓN */
 button[type="submit"] {
-  background-color: #7A003C;
+  background-color: #8e8ef1;
   color: white;
   font-weight: bold;
   border: none;
