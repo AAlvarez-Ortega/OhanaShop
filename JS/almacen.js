@@ -41,24 +41,28 @@ async function cargarProductos(categoria = 'todas') {
 
   lista.innerHTML = '';
 
-  productos.forEach(prod => {
-    const div = document.createElement('div');
-    div.className = 'producto';
-    div.innerHTML = `
-      <div class="producto-info">
-        <span><strong>${prod.nombre}</strong></span>
-        <span>${prod.descripcion}</span>
+ productos.forEach(prod => {
+  const div = document.createElement('div');
+  div.className = 'producto';
+  div.innerHTML = `
+    <div class="producto-info">
+      <strong>${prod.nombre}</strong>
+      <div class="producto-imagen">
+        <img src="${prod.imagen_url}" alt="img" />
       </div>
-      <div class="producto-precio">$${prod.precio_venta}</div>
-    `;
+      <div class="producto-piezas">${prod.piezas} pz en existencia</div>
+    </div>
+    <div class="producto-precio">$${prod.precio_venta}</div>
+  `;
 
-    div.addEventListener('click', () => {
-      localStorage.setItem('codigo_barras', prod.id);
-      window.location.href = 'productoexistente.html';
-    });
-
-    lista.appendChild(div);
+  div.addEventListener('click', () => {
+    localStorage.setItem('codigo_barras', prod.id);
+    window.location.href = 'productoexistente.html';
   });
+
+  lista.appendChild(div);
+});
+
 }
 
 // Filtro por categoría
