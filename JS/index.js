@@ -32,21 +32,60 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       if (userData.rol === 'administrador') {
-        // Mostrar botones visibles solo a administradores
-        const btnAlmacen = document.getElementById('btn-almacen');
-        if (btnAlmacen) {
-          btnAlmacen.style.display = 'block';
-          btnAlmacen.addEventListener('click',() =>{
-            window.location.href = 'almacen.html';
-          });
+          // Almacén
+          const btnAlmacen = document.getElementById('btn-almacen');
+          if (btnAlmacen) {
+            btnAlmacen.style.display = 'block';
+            btnAlmacen.addEventListener('click', () => {
+              window.location.href = 'almacen.html';
+            });
+          }
+
+          // Nuevo Producto
+          if (btnNuevo) {
+            btnNuevo.style.display = 'block';
+            btnNuevo.addEventListener('click', () => {
+              window.location.href = 'scaner.html';
+            });
+          }
+
+          // Categorías
+          const btnCategorias = document.getElementById('btn-categorias');
+          if (btnCategorias) {
+            btnCategorias.style.display = 'block';
+            btnCategorias.addEventListener('click', () => {
+              window.location.href = 'categorias.html'; // Cambia según el archivo real
+            });
+          }
+
+          // Ventas
+          const btnVentas = document.getElementById('btn-ventas');
+          if (btnVentas) {
+            btnVentas.style.display = 'block';
+            btnVentas.addEventListener('click', () => {
+              window.location.href = 'ventas.html'; // Cambia según el archivo real
+            });
+          }
+
+        } else {
+          // Cliente: mostrar combo de categorías
+          const filtroCategorias = document.getElementById('filtro-categorias');
+          if (filtroCategorias) {
+            filtroCategorias.style.display = 'block';
+
+            // Cargar dinámicamente las categorías
+            const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
+            if (!error && categorias) {
+              categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = cat.nombre;
+                filtroCategorias.appendChild(option);
+              });
+            }
+          }
         }
-        if (btnNuevo) {
-          btnNuevo.style.display = 'block';
-          btnNuevo.addEventListener('click', () => {
-            window.location.href = 'scaner.html';
-          });
-        }
-      }
+
     }
   }
 

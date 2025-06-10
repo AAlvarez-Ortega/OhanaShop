@@ -31,16 +31,18 @@
     </div>
     
     
-    <button class="menu-btn" id="btn-nuevo-producto" data-role="admin-nuevo" style="display: none;">Nuevo Producto</button>
-    <button class="menu-btn"id="btn-almacen" data-role="admin-almacen" style="display: none;">Almacén</button>
+      <!-- Botones visibles solo para administrador -->
+      <button class="menu-btn" id="btn-nuevo-producto" style="display: none;">Nuevo Producto</button>
+      <button class="menu-btn" id="btn-almacen" style="display: none;">Almacén</button>
+      <button class="menu-btn" id="btn-categorias" style="display: none;">Categorías</button>
+      <button class="menu-btn" id="btn-ventas" style="display: none;">Ventas</button>
 
-    <button class="menu-btn">Termos</button>
-    <button class="menu-btn">Regreso a clases</button>
-    <button class="menu-btn">Coleccionables</button>
-    <button class="menu-btn">Moda</button>
-    <div class="qr-button">
-      <img src="img/qr.png" alt="Escanear QR">
-    </div>
+      <!-- Combo box visible solo para clientes -->
+      <select id="filtro-categorias" style="display: none;">
+        <option value="">Todas las categorías</option>
+      </select>
+
+   
   </aside>
 
   <main class="main">
