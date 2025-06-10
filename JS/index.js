@@ -32,8 +32,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       if (userData.rol === 'administrador') {
-        const btnAlmacen = document.querySelector('.menu-btn[data-role="admin-almacen"]');
-        if (btnAlmacen) btnAlmacen.style.display = 'block';
+        // Mostrar botones visibles solo a administradores
+        const btnAlmacen = document.getElementById('btn-almacen');
+        if (btnAlmacen) {
+          btnAlmacen.style.display = 'block';
+          btnAlmacen.addEventListener('click',() =>{
+            window.location.href = 'scaner.html';
+          });
+        }
         if (btnNuevo) {
           btnNuevo.style.display = 'block';
           btnNuevo.addEventListener('click', () => {
@@ -116,4 +122,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       floatingMenu.classList.remove('show');
     }
   });
+
 });
