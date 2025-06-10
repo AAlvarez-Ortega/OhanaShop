@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Almacén</title>
-  <link rel="stylesheet" href="css/almacen-style.css">
+  <link rel="stylesheet" href="css/almacen-style.css" />
 </head>
 <body>
   <header>
     <h2>Almacén</h2>
+  </header>
+
+  <section class="barra-filtros">
     <select id="filtro-categorias">
       <option value="todas">Todas las categorías</option>
     </select>
-  </header>
+
+    <div class="busqueda">
+      <input type="text" id="buscar-nombre" placeholder="Buscar por nombre..." />
+      <span class="icono-lupa">🔍</span>
+    </div>
+
+    <button id="abrir-lector" class="btn-lector">📷 Escanear</button>
+  </section>
 
   <main id="lista-productos" class="lista-productos">
-    <!-- Aquí se insertarán los productos dinámicamente -->
+    <!-- Productos dinámicos -->
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="JS/almacen.js"></script>
+  <!-- Modal lector de código de barras -->
+  <div id="modal-lector" class="modal-lector oculto">
+    <div id="lector"></div>
+    <button id="cerrar-lector" class="btn-cerrar">Cerrar</button>
+  </div>
+
+  <!-- Librerías -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" type="module"></script>
+  <script type="module" src="js/almacen.js"></script>
 </body>
 </html>

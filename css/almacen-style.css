@@ -2,11 +2,16 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: hsl(255, 40%, 94%);
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
 header {
   background-color: #F5F1DA;
-  padding: 15px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -18,12 +23,61 @@ header h2 {
   color: #333;
 }
 
-header select {
-  padding: 10px;
+.barra-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border-bottom: 1px solid #ddd;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#filtro-categorias {
+  flex: 1 1 200px;
+  padding: 12px;
+  font-size: 16px;
   border-radius: 10px;
   border: none;
-  font-size: 16px;
   background-color: #f3f3f3;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  min-width: 180px;
+}
+
+.busqueda {
+  flex: 2 1 300px;
+  position: relative;
+}
+
+#buscar-nombre {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: #f3f3f3;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.icono-lupa {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #888;
+}
+
+.btn-lector {
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: #8e8ef1;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .lista-productos {
@@ -52,6 +106,7 @@ header select {
 .producto-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .producto-info span {
@@ -63,11 +118,6 @@ header select {
   font-weight: bold;
   font-size: 16px;
   color: #7A003C;
-}
-.producto-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .producto-imagen {
@@ -87,6 +137,52 @@ header select {
 
 .producto-piezas {
   font-size: 13px;
-  color: #555;
+  color: #000000;
   font-style: italic;
+}
+
+/* Lector flotante */
+.modal-lector {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-lector.oculto {
+  display: none;
+}
+
+#lector {
+  width: 320px;
+  height: 320px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.btn-cerrar {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #aaa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .barra-filtros {
+    flex-direction: column;
+  }
+
+  .producto {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
