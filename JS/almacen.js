@@ -93,11 +93,21 @@ botonLector.addEventListener('click', () => {
   modalLector.classList.remove('oculto');
   const qr = new Html5Qrcode("lector");
   qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
-    buscador.value = decodedText;
-    aplicarFiltros();
+  const producto = todosLosProductos.find(p => p.id === decodedText.trim());
+
+  if (producto) {
+    localStorage.setItem('codigo_barras', producto.id);
+    qr.stop().then(() => {
+      modalLector.classList.add('oculto');
+      window.location.href = 'productoexistente.html';
+    });
+  } else {
+    alert("Producto no encontrado");
     qr.stop();
     modalLector.classList.add('oculto');
-  });
+  }
+});
+
 });
 
 // Cerrar lector
