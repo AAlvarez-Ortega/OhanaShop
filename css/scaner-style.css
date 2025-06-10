@@ -17,18 +17,21 @@ header {
 }
 
 .container {
-  max-width: 400px;
+  width: 90%;
+  max-width: 500px;
   margin: 40px auto;
   background: #f8f8f8;
   border-radius: 20px;
   padding: 30px 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  box-sizing: border-box;
 }
 
 h2 {
   margin-bottom: 20px;
   color: #333;
+  font-size: 1.4em;
 }
 
 #scanner-container {
@@ -49,25 +52,44 @@ video#scanner {
 
 input#codigo {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 10px 0;
   font-size: 16px;
   border: none;
   border-radius: 8px;
   background-color: #ddd;
+  box-sizing: border-box;
 }
 
 button#btn-aceptar {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
   border: none;
   border-radius: 10px;
-  background-color: #d3d3d3;
+  background-color: #8e8ef1;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 button#btn-aceptar:hover {
   background-color: #c0c0c0;
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.2em;
+  }
+
+  .container {
+    margin: 20px auto;
+    padding: 20px 15px;
+  }
+
+  input#codigo,
+  button#btn-aceptar {
+    font-size: 15px;
+    padding: 10px;
+  }
 }
