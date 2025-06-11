@@ -64,14 +64,16 @@ document.addEventListener('click', (e) => {
 });
 
 function cargarUserData(userId) {
-  supabase.from('usuarios').select('*').eq('id', userId).single().then(({ data, error }) => {
-    if (!error && data) {
-      userInfo = data;
-      if (userInfo.foto) {
-        userIcon.innerHTML = `<img src="${userInfo.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
-      }
-    }
-  });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+            user = session.user;
+            cargarUserData(user.id);
+            document.querySelector('.login-text').textContent = 'Sesión iniciada';
+        } else {
+            btnAgregar.disabled = true;
+        }
+    });
+
 }
 
 
