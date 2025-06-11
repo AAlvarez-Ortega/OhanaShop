@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       userIcon.innerHTML = user.foto
         ? `<img src="${user.foto}" alt="user" />`
         : '👤';
-      userIcon.style.cursor = 'pointer';
 
       floatingMenu.innerHTML = `
         <div class="avatar">${user.foto ? `<img src="${user.foto}" alt="avatar" />` : '👤'}</div>
@@ -43,8 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       loginText.textContent = 'Inicio de sesión';
       userIcon.innerHTML = '👤';
-      userIcon.style.cursor = 'pointer';
-
       floatingMenu.innerHTML = `
         <div class="avatar">👤</div>
         <hr />
@@ -59,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ============= CARGAR PRODUCTO =============
+  // ================= PRODUCTO =====================
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   if (!id) return;
@@ -75,9 +72,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  const usuarioActivo = await obtenerUsuarioActivo();
-  const botonDeshabilitado = !usuarioActivo;
-
   const imagenDiv = document.getElementById('imagen-producto');
   const infoDiv = document.getElementById('info-producto');
 
@@ -85,25 +79,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     <img src="${producto.imagen_url}" alt="${producto.nombre}" style="width: 100%; max-width: 500px; border-radius: 12px;" />
   `;
 
-const mensajeAviso = botonDeshabilitado
-  ? `<p style="color: #a00; font-size: 14px; margin-top: 10px;">Inicia sesión para agregar al carrito</p>`
-  : '';
-
-infoDiv.innerHTML = `
-  <h2>${producto.nombre}</h2>
-  <p>${producto.descripcion}</p>
-  <p><strong>Precio:</strong> $${producto.precio_venta}</p>
-  <p><strong>Stock:</strong> ${producto.piezas} piezas</p>
-  <div style="margin: 10px 0;">
-    <label for="cantidad">Pz:</label>
-    <input type="number" id="cantidad" min="1" value="1" style="width: 60px; margin-left: 8px;" />
-  </div>
-  <button id="btn-carrito"
-    ${botonDeshabilitado ? 'disabled' : ''}
-    style="padding: 10px 16px; background-color: #7a003c; color: white; border: none; border-radius: 10px; cursor: pointer;">
-    Añadir al carrito
-  </button>
-  ${mensajeAviso}
-`;
-
+  const botonDeshabilitado = !user;
+  infoDiv.innerHTML = `
+    <h2>${producto.nombre}</h2>
+    <p>${producto.descripcion}</p>
+    <p><strong>Precio:</strong> $${producto.precio_venta}</p>
+    <p><strong>Stock:</strong> ${producto.piezas} piezas</p>
+    <div style="margin: 10px 0;">
+      <label for="cantidad">Pz:</label>
+      <input type="number" id="cantidad" min="1" value="1" style="width: 60px; margin-left: 8px;" />
+    </div>
+    <button id="btn-carrito" ${botonDeshabilitado ? 'disabled' : ''} style="padding: 10px 16px; background-color: #7a003c; color: white; border: none; border-radius: 10px; cursor: pointer;">
+      Añadir al carrito
+    </button>
+    ${botonDeshabilitado ? `<p style="color: #900; margin-top: 10px;">Inicia sesión para agregar al carrito</p>` : ''}
+  `;
 });
