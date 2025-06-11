@@ -23,8 +23,24 @@ header {
   padding: 10px 20px;
 }
 
+.logo-toggle {
+  width: 28px;
+  height: auto;
+  cursor: pointer;
+}
+
+.logo-empresa {
+  height: 40px; /* ajusta según necesites */
+  max-width: 150px;
+  margin: 0 auto;
+  display: block;
+  flex: 1;
+  object-fit: contain;
+}
+
 #menu-toggle {
   font-size: 24px;
+  width: 24px;
   background: none;
   border: none;
   cursor: pointer;
@@ -38,6 +54,15 @@ header {
   overflow: hidden;
   cursor: pointer;
   border: 2px solid #ddd;
+}
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.login-text {
+  font-size: 14px;
+  color: #333;
 }
 
 #user-icon img {
