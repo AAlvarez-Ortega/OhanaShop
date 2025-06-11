@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto - Ohana Shop</title>
+  <link rel="stylesheet" href="css/vistaproductos.css" />
+</head>
+<body>
+
+  <header>
+    <button onclick="history.back()">⬅</button>
+    <div class="user-section">
+      <span class="login-text">Inicio de sesión</span>
+      <div id="user-icon"></div>
+    </div>
+  </header>
+
+  <!-- Menú flotante de usuario -->
+  <div class="floating-user-menu" id="floating-user-menu">
+    <!-- Se llena dinámicamente con JS -->
+  </div>
+
+  <main class="vista-producto">
+    <div class="imagen-grande">
+      <img id="producto-img" src="" alt="Producto" />
+    </div>
+    <div class="info-producto">
+      <h2 id="producto-nombre">Nombre</h2>
+      <p id="producto-desc">Descripción del producto</p>
+      <p><strong>Precio:</strong> $<span id="producto-precio">0.00</span></p>
+      <input type="number" id="cantidad" min="1" placeholder="Cantidad a comprar" />
+      <button id="btn-agregar">Agregar al carrito</button>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="JS/vistaproductos.js"></script>
+</body>
+</html>
