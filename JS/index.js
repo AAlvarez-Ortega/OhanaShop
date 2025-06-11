@@ -73,9 +73,12 @@ async function cargarProductos(filtroCategoria = null) {
 
   if (!error && productos) {
     productsContainer.innerHTML = '';
+
     productos.forEach(producto => {
       const card = document.createElement('div');
       card.classList.add('product-card');
+      card.style.cursor = 'pointer'; // visual feedback
+
       card.innerHTML = `
         <div class="image-container">
           <img src="${producto.imagen_url}" alt="${producto.nombre}" />
@@ -85,8 +88,11 @@ async function cargarProductos(filtroCategoria = null) {
         <p><small>${producto.piezas} piezas</small></p>
       `;
 
-      // Agregar redirección al hacer clic
       card.addEventListener('click', () => {
+        // Forzamos cierre del menú flotante (por si quedó abierto)
+        floatingMenu.classList.remove('show');
+
+        // Navegación a la vista detallada
         window.location.href = `Vproductos.html?id=${producto.id}`;
       });
 
@@ -94,6 +100,7 @@ async function cargarProductos(filtroCategoria = null) {
     });
   }
 }
+
 
 
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
@@ -134,9 +141,12 @@ async function cargarProductos(filtroCategoria = null) {
     }
   }
 
-  document.addEventListener('click', (e) => {
-    if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
-      floatingMenu.classList.remove('show');
-    }
-  });
+      document.addEventListener('click', (e) => {
+        const clickedInside = floatingMenu.contains(e.target) || userIcon.contains(e.target);
+        if (!clickedInside) {
+          floatingMenu.classList.remove('show');
+        }
+      });
+
+
 });
