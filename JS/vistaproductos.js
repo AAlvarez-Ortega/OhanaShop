@@ -12,6 +12,8 @@ const userIcon = document.getElementById('user-icon');
 const floatingMenu = document.getElementById('floating-user-menu');
 
 let user = null;
+let userInfo = null;
+
 
 // Obtener sesión actual
 supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,22 +66,23 @@ document.addEventListener('click', (e) => {
 function cargarUserData(userId) {
   supabase.from('usuarios').select('*').eq('id', userId).single().then(({ data, error }) => {
     if (!error && data) {
-      user = data;
-      if (user.foto) {
-        userIcon.innerHTML = `<img src="${user.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+      userInfo = data;
+      if (userInfo.foto) {
+        userIcon.innerHTML = `<img src="${userInfo.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
       }
     }
   });
 }
 
+
 function renderFloatingMenu() {
-  if (user && user.email) {
+  if (userInfo && userInfo.email) {
     floatingMenu.innerHTML = `
-      <div class="avatar"><img src="${user.foto}" alt="avatar" /></div>
+      <div class="avatar"><img src="${userInfo.foto}" alt="avatar" /></div>
       <hr />
       <div class="info">
-        <strong>${user.nombre}</strong>
-        <span>${user.email}</span>
+        <strong>${userInfo.nombre}</strong>
+        <span>${userInfo.email}</span>
       </div>
       <div class="logout-row">
         <span>Cerrar sesión</span>

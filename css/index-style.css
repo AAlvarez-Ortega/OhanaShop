@@ -195,21 +195,23 @@ header {
 /* --- NUEVO MENÚ FLOTANTE DE USUARIO --- */
 .floating-user-menu {
   position: fixed;
-  top: 80px;
-  right: 40px;
-  background-color: #f2f2f2;
-  border-radius: 20px;
+  top: 70px;
+  right: 30px;
+  width: 260px;
+  background-color: #f8f8f8;
+  border-radius: 15px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  width: 280px;
-  padding: 20px;
+  padding: 18px;
+  z-index: 1000;
   display: none;
-  z-index: 3000;
-  animation: fadeInUp 0.3s ease;
+  pointer-events: none; /* <- PREVENIR que bloquee clics si está oculto */
 }
 
 .floating-user-menu.show {
   display: block;
+  pointer-events: auto; /* <- Habilitar solo cuando esté visible */
 }
+
 
 .floating-user-menu .avatar {
   width: 80px;
