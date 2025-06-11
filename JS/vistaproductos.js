@@ -10,48 +10,84 @@ const precio = document.getElementById('producto-precio');
 const btnAgregar = document.getElementById('btn-agregar');
 const userIcon = document.getElementById('user-icon');
 const floatingMenu = document.getElementById('floating-user-menu');
+const loginText = document.querySelector('.login-text');
 
 let user = null;
 let userInfo = null;
 
+// 🔹 Siempre se ejecuta al cargar la página
+window.addEventListener('DOMContentLoaded', async () => {
+  await cargarProducto(); // 🟢 Cargar producto aunque no haya sesión
+  await verificarSesion(); // 🟢 Revisar sesión después
+});
 
-// Obtener sesión actual
-supabase.auth.getSession().then(({ data: { session } }) => {
+// 🔹 Cargar producto del localStorage y luego desde Supabase
+async function cargarProducto() {
+  const id = localStorage.getItem('producto_id');
+  if (!id) {
+    window.location.href = 'index.html';
+    return;
+  }
+
+  const { data, error } = await supabase.from('productos').select('*').eq('id', id).single();
+  if (error || !data) {
+    alert("Error al cargar el producto");
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // Mostrar datos
+  img.src = data.imagen_url;
+  nombre.textContent = data.nombre;
+  desc.textContent = data.descripcion;
+  precio.textContent = data.precio_venta;
+}
+
+// 🔹 Verificar sesión y cargar usuario (opcional)
+async function verificarSesion() {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const session = sessionData?.session;
+
   if (session?.user) {
     user = session.user;
-    cargarUserData(user.id);
+    btnAgregar.disabled = false;
+    await cargarUserData(user.id);
   } else {
     btnAgregar.disabled = true;
   }
-});
+}
 
-// Cargar datos del producto desde localStorage
-const id = localStorage.getItem('producto_id');
-
-if (!id) window.location.href = 'index.html';
-
-supabase.from('productos').select('*').eq('id', id).single().then(({ data, error }) => {
-  if (!error && data) {
-    img.src = data.imagen_url;
-    nombre.textContent = data.nombre;
-    desc.textContent = data.descripcion;
-    precio.textContent = data.precio_venta;
-  } else {
-    alert("Error al cargar el producto");
-    window.location.href = 'index.html';
-  }
-});
-
+// 🔹 Evento del botón Agregar
 btnAgregar.addEventListener('click', () => {
   if (!user) {
     alert("Debes iniciar sesión para agregar al carrito");
     return;
   }
+
   const cantidad = document.getElementById('cantidad').value;
-  if (!cantidad || cantidad <= 0) return alert("Ingresa una cantidad válida");
+  if (!cantidad || cantidad <= 0) {
+    alert("Ingresa una cantidad válida");
+    return;
+  }
+
   alert(`Se agregaron ${cantidad} piezas al carrito (funcionalidad pendiente)`);
 });
 
+// 🔹 Cargar información del usuario si hay sesión
+async function cargarUserData(userId) {
+  const { data, error } = await supabase.from('usuarios').select('*').eq('id', userId).single();
+  if (error || !data) return;
+
+  userInfo = data;
+
+  if (userInfo.foto) {
+    userIcon.innerHTML = `<img src="${userInfo.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+  }
+
+  if (loginText) loginText.textContent = 'Sesión iniciada';
+}
+
+// 🔹 Icono usuario y menú flotante
 userIcon.addEventListener('click', () => {
   floatingMenu.classList.toggle('show');
   renderFloatingMenu();
@@ -63,27 +99,14 @@ document.addEventListener('click', (e) => {
   }
 });
 
-function cargarUserData(userId) {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) {
-            user = session.user;
-            cargarUserData(user.id);
-        } else {
-            btnAgregar.disabled = true;
-        }
-    });
-
-}
-
-
 function renderFloatingMenu() {
-  if (userInfo && userInfo.email) {
+  if (user && userInfo) {
     floatingMenu.innerHTML = `
       <div class="avatar"><img src="${userInfo.foto}" alt="avatar" /></div>
       <hr />
       <div class="info">
         <strong>${userInfo.nombre}</strong>
-        <span>${userInfo.email}</span>
+        <span>${user.email}</span>
       </div>
       <div class="logout-row">
         <span>Cerrar sesión</span>
