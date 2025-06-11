@@ -1,3 +1,6 @@
+// JS/index.js
+import { supabase, obtenerUsuarioActivo, cerrarSesion } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
   const menuToggle = document.getElementById('menu-toggle');
   const sidebar = document.getElementById('sidebar');
@@ -11,14 +14,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnVentas = document.getElementById('btn-ventas');
   const filtroCategorias = document.getElementById('filtro-categorias');
 
-  const supabase = window.supabase.createClient(
-    'https://qybynnifyuvbuacanlaa.supabase.co',
-     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
-  );
+  let userData = await obtenerUsuarioActivo();
 
-  let userData = null;
-
-  // Mostrar filtro de categorías siempre
   if (filtroCategorias) {
     filtroCategorias.style.display = 'block';
     const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
@@ -38,51 +35,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Cargar productos de forma global
   await cargarProductos();
 
-  // Verificar sesión
-  const { data: { session } } = await supabase.auth.getSession();
+  if (userData) {
+    if (userData.foto) {
+      userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+    }
 
-  if (session?.user) {
-    const id = session.user.id;
-    const { data: usuario, error } = await supabase
-      .from('usuarios')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (!error && usuario) {
-      userData = usuario;
-
-      if (userData.foto) {
-        userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+    if (userData.rol === 'administrador') {
+      if (btnAlmacen) {
+        btnAlmacen.style.display = 'block';
+        btnAlmacen.addEventListener('click', () => window.location.href = 'almacen.html');
       }
-
-      if (userData.rol === 'administrador') {
-        if (btnAlmacen) {
-          btnAlmacen.style.display = 'block';
-          btnAlmacen.addEventListener('click', () => window.location.href = 'almacen.html');
-        }
-
-        if (btnNuevo) {
-          btnNuevo.style.display = 'block';
-          btnNuevo.addEventListener('click', () => window.location.href = 'scaner.html');
-        }
-
-        if (btnCategorias) {
-          btnCategorias.style.display = 'block';
-          btnCategorias.addEventListener('click', () => window.location.href = 'categorias.html');
-        }
-
-        if (btnVentas) {
-          btnVentas.style.display = 'block';
-          btnVentas.addEventListener('click', () => window.location.href = 'ventas.html');
-        }
-
-        // Ocultar filtro si es admin
-        if (filtroCategorias) filtroCategorias.style.display = 'none';
+      if (btnNuevo) {
+        btnNuevo.style.display = 'block';
+        btnNuevo.addEventListener('click', () => window.location.href = 'scaner.html');
       }
+      if (btnCategorias) {
+        btnCategorias.style.display = 'block';
+        btnCategorias.addEventListener('click', () => window.location.href = 'categorias.html');
+      }
+      if (btnVentas) {
+        btnVentas.style.display = 'block';
+        btnVentas.addEventListener('click', () => window.location.href = 'ventas.html');
+      }
+      if (filtroCategorias) filtroCategorias.style.display = 'none';
     }
   }
 
@@ -93,7 +70,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
-
     if (!error && productos) {
       productsContainer.innerHTML = '';
       productos.forEach(producto => {
@@ -134,10 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
         </div>
       `;
-      document.getElementById('logout-btn').addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        location.reload();
-      });
+      document.getElementById('logout-btn').addEventListener('click', cerrarSesion);
     } else {
       floatingMenu.innerHTML = `
         <div class="avatar">👤</div>
