@@ -5,55 +5,52 @@ document.addEventListener('DOMContentLoaded', async () => {
   const floatingMenu = document.getElementById('floating-user-menu');
   const loginText = document.querySelector('.login-text');
 
-  // 1. Obtener usuario logueado
-  const userData = await obtenerUsuarioActivo();
+  const user = await obtenerUsuarioActivo();
+  renderFloatingMenu(user);
 
-  // 2. Mostrar ícono o imagen
-  if (userData && userData.foto) {
-    loginText.textContent = 'Sesión iniciada';
-    userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />`;
-    userIcon.style.cursor = 'pointer';
-  } else {
-    userIcon.innerHTML = '👤';
-    userIcon.style.cursor = 'text';
-  }
-
-  // 3. Mostrar menú al hacer clic en el ícono
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
-    renderFloatingMenu(userData);
+    renderFloatingMenu(user);
   });
 
-  // 4. Cerrar menú al hacer clic fuera
   document.addEventListener('click', (e) => {
     if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
       floatingMenu.classList.remove('show');
     }
   });
 
-  // 5. Renderizar menú flotante según sesión
-  function renderFloatingMenu(userData) {
-    if (userData) {
+  function renderFloatingMenu(user) {
+    if (user) {
+      loginText.textContent = 'Sesión iniciada';
+      userIcon.innerHTML = user.foto
+        ? `<img src="${user.foto}" alt="user" />`
+        : '👤';
+      userIcon.style.cursor = 'pointer';
+
       floatingMenu.innerHTML = `
-        <div class="avatar"><img src="${userData.foto}" alt="avatar" /></div>
+        <div class="avatar">${user.foto ? `<img src="${user.foto}" alt="avatar" />` : '👤'}</div>
         <hr />
         <div class="info">
-          <strong>${userData.nombre}</strong>
-          <span>${userData.email}</span>
+          <strong>${user.nombre}</strong>
+          <span>${user.email}</span>
         </div>
         <div class="logout-row">
           <span>Cerrar sesión</span>
-          <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
+          <button class="logout-btn" id="logout-btn">🔌</button>
         </div>
       `;
       document.getElementById('logout-btn').addEventListener('click', cerrarSesion);
     } else {
+      loginText.textContent = 'Inicio de sesión';
+      userIcon.innerHTML = '👤';
+      userIcon.style.cursor = 'pointer';
+
       floatingMenu.innerHTML = `
         <div class="avatar">👤</div>
         <hr />
         <div class="info"><strong>No has iniciado sesión</strong></div>
         <div class="logout-row">
-          <button class="logout-btn" id="login-btn" title="Iniciar sesión">🔓</button>
+          <button class="logout-btn" id="login-btn">🔓</button>
         </div>
       `;
       document.getElementById('login-btn').addEventListener('click', () => {
@@ -62,10 +59,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // ================= CARGAR PRODUCTO ===================
+  // Cargar producto
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
-
   if (!id) return;
 
   const { data: producto, error } = await supabase
