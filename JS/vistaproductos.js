@@ -68,7 +68,6 @@ function cargarUserData(userId) {
         if (session?.user) {
             user = session.user;
             cargarUserData(user.id);
-            document.querySelector('.login-text').textContent = 'Sesión iniciada';
         } else {
             btnAgregar.disabled = true;
         }
