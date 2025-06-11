@@ -63,30 +63,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  async function cargarProductos(filtroCategoria = null) {
-    let query = supabase.from('productos').select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
-    if (filtroCategoria && filtroCategoria !== 'todos') {
-      query = query.eq('categoria_id', filtroCategoria);
-    }
-
-    const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
-    if (!error && productos) {
-      productsContainer.innerHTML = '';
-      productos.forEach(producto => {
-        const card = document.createElement('div');
-        card.classList.add('product-card');
-        card.innerHTML = `
-          <div class="image-container">
-            <img src="${producto.imagen_url}" alt="${producto.nombre}" />
-          </div>
-          <p><strong>${producto.nombre}</strong></p>
-          <p><strong>$${producto.precio_venta}</strong></p>
-          <p><small>${producto.piezas} piezas</small></p>
-        `;
-        productsContainer.appendChild(card);
-      });
-    }
+async function cargarProductos(filtroCategoria = null) {
+  let query = supabase.from('productos').select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+  if (filtroCategoria && filtroCategoria !== 'todos') {
+    query = query.eq('categoria_id', filtroCategoria);
   }
+
+  const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
+
+  if (!error && productos) {
+    productsContainer.innerHTML = '';
+    productos.forEach(producto => {
+      const card = document.createElement('div');
+      card.classList.add('product-card');
+      card.innerHTML = `
+        <div class="image-container">
+          <img src="${producto.imagen_url}" alt="${producto.nombre}" />
+        </div>
+        <p><strong>${producto.nombre}</strong></p>
+        <p><strong>$${producto.precio_venta}</strong></p>
+        <p><small>${producto.piezas} piezas</small></p>
+      `;
+
+      // Agregar redirección al hacer clic
+      card.addEventListener('click', () => {
+        window.location.href = `Vproductos.html?id=${producto.id}`;
+      });
+
+      productsContainer.appendChild(card);
+    });
+  }
+}
+
 
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));

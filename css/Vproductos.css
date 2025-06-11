@@ -1,0 +1,163 @@
+/* Estilo general */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: hsl(255, 40%, 94%);
+}
+
+/* Header */
+header {
+  background-color: #F5F1DA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
+
+/* Icono de regreso */
+.user-icon {
+  font-size: 20px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid #ddd;
+}
+
+/* Sección de usuario */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-text {
+  font-size: 14px;
+  color: #333;
+}
+
+#user-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #ddd;
+}
+
+#user-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Contenedor principal */
+.vprod-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Imagen del producto */
+.vprod-image {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.vprod-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Información del producto */
+.vprod-info {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.vprod-info h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #222;
+}
+
+.vprod-info p {
+  margin: 8px 0;
+  color: #444;
+  font-size: 15px;
+}
+
+.vprod-info input[type="number"] {
+  padding: 6px 10px;
+  font-size: 16px;
+  width: 70px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-left: 8px;
+}
+
+/* Botón añadir al carrito */
+.vprod-info button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background-color: #7a003c;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vprod-info button:hover {
+  background-color: #5c002e;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .vprod-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .vprod-image, .vprod-info {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .vprod-info {
+    margin-top: 20px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .user-section {
+    justify-content: flex-start;
+  }
+
+  .login-text {
+    font-size: 13px;
+  }
+}
