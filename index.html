@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ohana Shop</title>
   <link rel="stylesheet" href="css/index-style.css">
+  <!-- Carga Supabase UMD antes del script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="JS/index.js"></script> <!-- SIN type="module" -->
+
+
 </head>
 <body>
 
@@ -12,6 +17,7 @@
     <img src="img/menu.png" alt="Logo Ohana" id="menu-toggle" class="logo-toggle" title="Abrir menú" />
      <img src="img/logo.png" alt="Logo Ohana" class="logo-empresa" />
      <div class="user-section">
+        <span class="login-text">Inicio de sesión</span>
         <div id="user-icon"></div>
       </div>
   </header>
@@ -49,15 +55,7 @@
       <!-- Aquí se renderizan los productos desde JS -->
     </section>
   </main>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="js/auth.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initAuth(); // Llama a la autenticación global
-    });
-  </script>
-  <script src="js/index.js"></script>
-</body>
-</html>
+
+
 </body>
 </html>

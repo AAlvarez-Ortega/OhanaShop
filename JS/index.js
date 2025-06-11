@@ -3,12 +3,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   const sidebar = document.getElementById('sidebar');
   const closeBtn = document.getElementById('menu-close');
   const productsContainer = document.querySelector('.products');
+  const userIcon = document.getElementById('user-icon');
+  const floatingMenu = document.getElementById('floating-user-menu');
+  const btnNuevo = document.getElementById('btn-nuevo-producto');
+  const btnAlmacen = document.getElementById('btn-almacen');
+  const btnCategorias = document.getElementById('btn-categorias');
+  const btnVentas = document.getElementById('btn-ventas');
   const filtroCategorias = document.getElementById('filtro-categorias');
 
   const supabase = window.supabase.createClient(
     'https://qybynnifyuvbuacanlaa.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
+     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
   );
+
+  let userData = null;
 
   // Mostrar filtro de categorías siempre
   if (filtroCategorias) {
@@ -30,8 +38,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Cargar productos sin importar sesión
+  // Cargar productos de forma global
   await cargarProductos();
+
+  // Verificar sesión
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (session?.user) {
+    const id = session.user.id;
+    const { data: usuario, error } = await supabase
+      .from('usuarios')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (!error && usuario) {
+      userData = usuario;
+
+      if (userData.foto) {
+        userIcon.innerHTML = `<img src="${userData.foto}" alt="user" style="width:100%; height:100%; border-radius:50%;" />`;
+      }
+
+      if (userData.rol === 'administrador') {
+        if (btnAlmacen) {
+          btnAlmacen.style.display = 'block';
+          btnAlmacen.addEventListener('click', () => window.location.href = 'almacen.html');
+        }
+
+        if (btnNuevo) {
+          btnNuevo.style.display = 'block';
+          btnNuevo.addEventListener('click', () => window.location.href = 'scaner.html');
+        }
+
+        if (btnCategorias) {
+          btnCategorias.style.display = 'block';
+          btnCategorias.addEventListener('click', () => window.location.href = 'categorias.html');
+        }
+
+        if (btnVentas) {
+          btnVentas.style.display = 'block';
+          btnVentas.addEventListener('click', () => window.location.href = 'ventas.html');
+        }
+
+        // Ocultar filtro si es admin
+        if (filtroCategorias) filtroCategorias.style.display = 'none';
+      }
+    }
+  }
 
   async function cargarProductos(filtroCategoria = null) {
     let query = supabase.from('productos').select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
@@ -54,19 +107,55 @@ document.addEventListener('DOMContentLoaded', async () => {
           <p><strong>$${producto.precio_venta}</strong></p>
           <p><small>${producto.piezas} piezas</small></p>
         `;
-
-        // Navegar a vista de producto al hacer clic
-        card.addEventListener('click', () => {
-          localStorage.setItem('producto_id', producto.id);
-          window.location.href = 'vistaproductos.html';
-        });
-
         productsContainer.appendChild(card);
       });
     }
   }
 
-  // Navegación lateral
-  menuToggle?.addEventListener('click', () => sidebar?.classList.toggle('show'));
-  closeBtn?.addEventListener('click', () => sidebar?.classList.remove('show'));
+  menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
+  closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
+
+  userIcon.addEventListener('click', () => {
+    floatingMenu.classList.toggle('show');
+    renderFloatingMenu();
+  });
+
+  function renderFloatingMenu() {
+    if (userData) {
+      floatingMenu.innerHTML = `
+        <div class="avatar"><img src="${userData.foto}" alt="avatar" /></div>
+        <hr />
+        <div class="info">
+          <strong>${userData.nombre}</strong>
+          <span>${userData.email}</span>
+        </div>
+        <div class="logout-row">
+          <span>Cerrar sesión</span>
+          <button class="logout-btn" title="Cerrar sesión" id="logout-btn">🔌</button>
+        </div>
+      `;
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        location.reload();
+      });
+    } else {
+      floatingMenu.innerHTML = `
+        <div class="avatar">👤</div>
+        <hr />
+        <div class="info"><strong>No has iniciado sesión</strong></div>
+        <div class="logout-row">
+          <button class="logout-btn" id="login-btn" title="Iniciar sesión">🔓</button>
+        </div>
+      `;
+      document.getElementById('login-btn').addEventListener('click', () => {
+        window.location.href = 'login.html';
+      });
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!floatingMenu.contains(e.target) && !userIcon.contains(e.target)) {
+      floatingMenu.classList.remove('show');
+    }
+  });
 });
