@@ -228,6 +228,12 @@ header {
 .vprod-info button:hover {
   background-color: #5c002e;
 }
+button:disabled {
+  background-color: #aaa !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
