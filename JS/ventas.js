@@ -80,40 +80,44 @@ buscarNombre.addEventListener('input', renderProductos);
 
 // Funciones de escáner
 function iniciarEscaner() {
-  qrScanner = new Html5Qrcode("reader");
-  qrScanner.start(
-    { facingMode: "environment" },
-    {
-      fps: 10,
-      qrbox: { width: 250, height: 100 },
-      formatsToSupport: [
-        Html5QrcodeSupportedFormats.EAN_13,
-        Html5QrcodeSupportedFormats.UPC_A,
-        Html5QrcodeSupportedFormats.UPC_E,
-        Html5QrcodeSupportedFormats.CODE_128
-      ]
-    },
-    (decodedText) => {
-      const producto = productos.find(p => p.id === decodedText);
-      if (producto) {
-        detenerEscaner();
-        document.getElementById('modal-escaner').classList.add('oculto');
-        mostrarModal(producto);
-      }
-    },
-    (err) => {
-      // silencioso
-    }
-  ).catch(err => {
-    console.error("Error al iniciar escáner:", err);
-    alert("No se pudo acceder a la cámara.");
+  if (qrScanner) {
+    qrScanner.clear(); // limpiar anterior si existe
+  }
+
+  qrScanner = new Html5QrcodeScanner("reader", {
+    fps: 10,
+    qrbox: { width: 300, height: 150 },
+    formatsToSupport: [
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.CODE_128
+    ],
+    rememberLastUsedCamera: true,
+    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
   });
+
+  qrScanner.render(onScanSuccess, onScanFailure);
+}
+
+function onScanSuccess(decodedText) {
+  const producto = productos.find(p => p.id === decodedText);
+  if (producto) {
+    detenerEscaner();
+    document.getElementById('modal-escaner').classList.add('oculto');
+    mostrarModal(producto);
+    // 🔊 Opcional: sonido o vibración
+    // new Audio("beep.mp3").play(); 
+    if (navigator.vibrate) navigator.vibrate(100);
+  }
+}
+
+function onScanFailure(error) {
+  // Silencioso o mostrar log si deseas
 }
 
 function detenerEscaner() {
-  if (qrScanner) {
-    qrScanner.stop().then(() => qrScanner.clear());
-  }
+  if (qrScanner?.clear) qrScanner.clear();
 }
 
 // Renderizar
