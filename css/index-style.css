@@ -24,13 +24,13 @@ header {
 }
 
 .logo-toggle {
-  width: 28px;
+  width: 50px;
   height: auto;
   cursor: pointer;
 }
 
 .logo-empresa {
-  height: 40px; /* ajusta según necesites */
+  height: 40px;
   max-width: 150px;
   margin: 0 auto;
   display: block;
@@ -47,8 +47,8 @@ header {
 }
 
 #user-icon {
-  width: 50px;      /* antes 30px */
-  height: 50px;     /* antes 30px */
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: #ffffff;
   overflow: hidden;
@@ -63,8 +63,9 @@ header {
 }
 
 #cart-icon {
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
+  margin-right: 12px;
   color: #333;
   transition: transform 0.2s ease;
 }
@@ -85,15 +86,7 @@ header {
   border: 2px solid #ddd;
 }
 
-
-.login-text {
-  font-size: 14px;
-  color: #333;
-}
-
-
-
-/* --- NUEVO DISEÑO DE MENÚ --- */
+/* --- MENÚ LATERAL --- */
 .sidebar {
   position: fixed;
   top: 0;
@@ -170,36 +163,39 @@ header {
   margin-left: 230px;
 }
 
+/* --- NUEVO DISEÑO DE TARJETAS --- */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
   margin-top: 20px;
+  padding: 10px;
 }
 
 .product-card {
-  background-color: #fffefe;
-  padding: 10px;
-  border-radius: 15px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 16px;
   text-align: center;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 320px;
+  position: relative;
+  z-index: 1;
 }
 
-.product-card .image {
-  width: 100%;
-  height: 100px;
-  background-color: #ccc;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.product-card:hover {
+  transform: scale(1.02);
 }
 
 .image-container {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: #ffffff;
-  border-radius: 10px;
+  height: 180px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -212,7 +208,7 @@ header {
   object-fit: contain;
 }
 
-/* --- NUEVO MENÚ FLOTANTE DE USUARIO --- */
+/* --- MENÚ FLOTANTE DE USUARIO --- */
 .floating-user-menu {
   position: fixed;
   top: 70px;
@@ -224,15 +220,14 @@ header {
   padding: 18px;
   z-index: 1000;
   display: none;
-  pointer-events: none; /* <- PREVENIR que bloquee clics si está oculto */
+  pointer-events: none;
 }
 
 .floating-user-menu.show {
   display: block;
-  pointer-events: auto; /* <- Habilitar solo cuando esté visible */
+  pointer-events: auto;
   z-index: 1000;
 }
-
 
 .floating-user-menu .avatar {
   width: 80px;
@@ -252,7 +247,6 @@ header {
   object-fit: cover;
   display: block;
 }
-
 
 .floating-user-menu hr {
   border: none;
@@ -295,12 +289,8 @@ header {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.logo-toggle {
-  width: 50px;
-  height: auto;
-  cursor: pointer;
-}
 
+/* --- SELECT DE CATEGORÍAS --- */
 #filtro-categorias {
   appearance: none;
   -webkit-appearance: none;
@@ -333,19 +323,42 @@ header {
     width: 200px;
   }
 }
-.product-card {
-  position: relative;
-  z-index: 1;
+
+/* --- RESPONSIVE PARA MÓVILES --- */
+@media (max-width: 768px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-#cart-icon {
-  font-size: 22px;
-  cursor: pointer;
-  margin-right: 12px;
-  color: #333;
-  transition: transform 0.2s ease;
+@media (max-width: 480px) {
+  .products {
+    grid-template-columns: 1fr;
+  }
 }
 
-#cart-icon:hover {
-  transform: scale(1.1);
+@media (max-width: 768px) {
+  .products {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .product-card {
+    flex: 0 0 25%; /* 100% ÷ 4 tarjetas = 25% */
+    max-width: 25%;
+    scroll-snap-align: start;
+    min-width: 200px; /* asegura un tamaño mínimo legible */
+    height: auto;
+  }
+
+  .products::-webkit-scrollbar {
+    display: none;
+  }
 }
+
+
