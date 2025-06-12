@@ -3,58 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrar Venta</title>
-  <link rel="stylesheet" href="css/footer.css" />
+  <title>Ventas</title>
   <link rel="stylesheet" href="css/ventas-style.css" />
 </head>
 <body>
-  <header>
-    <button onclick="window.location.href='index.html'" class="back-btn">←</button>
+  <header class="ventas-header">
     <h2>Ventas</h2>
+    <div class="acciones-header">
+      <button id="btn-escaner" title="Escanear producto">📷</button>
+    </div>
   </header>
 
-  <main class="ventas-grid">
-    <section class="resultado" id="resultado" style="display:none;">
-        <div class="producto-card">
-          <div class="info-con-imagen">
-            <div class="info-texto">
-              <h3 id="nombre"></h3>
-              <p id="descripcion"></p>
-              <p><strong>Precio: </strong>$<span id="precio_venta"></span></p>
-              <p><strong>Existencia: </strong><span id="piezas"></span> pz</p>
-            </div>
-            <div class="imagen-circulo">
-              <img id="imagen_producto" src="" alt="Imagen producto" />
-            </div>
-          </div>
-          <input type="number" id="cantidad_vender" placeholder="Pz a vender" min="1" />
-          <button id="btn-vender">Vender</button>
-        </div>
-      </section>
+  <section class="filtros">
+    <select id="filtro-categorias"></select>
+    <input type="text" id="buscar-nombre" placeholder="Buscar producto..." />
+  </section>
 
-    <!-- Columna Escáner -->
-    <section class="scanner-box">
-      <video id="scanner" autoplay muted></video>
-      <input type="text" id="codigo" placeholder="O escribe el código aquí" />
-      <button id="btn-aceptar">Buscar producto</button>
-    </section>
+  <section class="productos-container">
+    <div id="lista-productos" class="lista-productos"></div>
+  </section>
 
-    <!-- Columna derecha: Lista de productos -->
-    <section class="lista-productos">
-      <div class="filtros">
-        <select id="filtro-categorias">
-          <option value="todas">Todas las categorías</option>
-        </select>
-        <input type="text" id="buscar-nombre" placeholder="Buscar por nombre..." />
-      </div>
-      <div id="productos-lista">
-        <!-- Aquí se insertan los productos dinámicamente -->
-      </div>
-    </section>
-  </main>
+  <section class="venta-container">
+    <h3>Productos a vender</h3>
+    <div id="lista-venta" class="lista-venta"></div>
+    <div class="footer-venta">
+      <span>Total: <strong id="total-venta">$0.00</strong></span>
+      <button id="btn-vender">💵 Vender</button>
+    </div>
+  </section>
 
-  <script type="module" src="./JS/ventas.js"></script>
-  <script src="JS/footer.js" type="module"></script>
+  <!-- Modal Producto -->
+  <div id="modal-producto" class="modal-producto oculto">
+    <div class="modal-contenido">
+      <span class="cerrar" id="cerrar-modal">✖</span>
+      <img id="modal-img" src="" alt="Imagen producto" />
+      <h3 id="modal-nombre">Producto</h3>
+      <p id="modal-stock">Stock: </p>
+      <p id="modal-precio">Precio: </p>
+      <label for="modal-cantidad">Cantidad:</label>
+      <input type="number" id="modal-cantidad" min="1" value="1" />
+      <button id="btn-agregar">Agregar a venta</button>
+    </div>
+  </div>
 
+  <!-- Modal Escáner -->
+  <div id="modal-escaner" class="modal-escaner oculto">
+    <div class="modal-escaner-contenido">
+      <span class="cerrar" id="cerrar-escaner">✖</span>
+      <p><strong>Escanea un producto</strong></p>
+      <div id="reader" style="width: 100%; max-width: 320px;"></div>
+      <p>o escribe el código:</p>
+      <input type="text" id="codigo-barras-input" placeholder="Código de barras..." />
+      <button id="buscar-por-codigo">Buscar producto</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script type="module" src="JS/ventas.js"></script>
 </body>
 </html>

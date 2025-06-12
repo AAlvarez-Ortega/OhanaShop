@@ -1,157 +1,178 @@
-import { BrowserBarcodeReader } from "https://cdn.jsdelivr.net/npm/@zxing/library@latest/+esm";
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { supabase } from './auth.js';
 
-// Inicializar cliente Supabase
-const supabase = createClient(
-  'https://qybynnifyuvbuacanlaa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
-);
+const listaProductos = document.getElementById('lista-productos');
+const filtroCategorias = document.getElementById('filtro-categorias');
+const buscarNombre = document.getElementById('buscar-nombre');
+const modalProducto = document.getElementById('modal-producto');
+const modalEscaner = document.getElementById('modal-escaner');
 
-const video = document.getElementById('scanner');
-const codigoInput = document.getElementById('codigo');
-const btnAceptar = document.getElementById('btn-aceptar');
-const resultado = document.getElementById('resultado');
-const nombreEl = document.getElementById('nombre');
-const descripcionEl = document.getElementById('descripcion');
-const precioEl = document.getElementById('precio_venta');
-const piezasEl = document.getElementById('piezas');
-const cantidadInput = document.getElementById('cantidad_vender');
+const modalImg = document.getElementById('modal-img');
+const modalNombre = document.getElementById('modal-nombre');
+const modalStock = document.getElementById('modal-stock');
+const modalPrecio = document.getElementById('modal-precio');
+const modalCantidad = document.getElementById('modal-cantidad');
+const btnAgregar = document.getElementById('btn-agregar');
+
+const listaVenta = document.getElementById('lista-venta');
+const totalVenta = document.getElementById('total-venta');
 const btnVender = document.getElementById('btn-vender');
 
-const filtroCat = document.getElementById('filtro-categorias');
-const buscarNombre = document.getElementById('buscar-nombre');
-const lista = document.getElementById('productos-lista');
 
-const codeReader = new BrowserBarcodeReader();
+let qrScanner = null; // global
+let productos = [];
+let carrito = [];
+let productoActual = null;
 
-async function iniciarEscaner() {
-  try {
-    const devices = await codeReader.getVideoInputDevices();
-    if (devices.length) {
-      const selectedDeviceId = devices[0].deviceId;
-      codeReader.decodeFromVideoDevice(selectedDeviceId, video, (result) => {
-        if (result) {
-          codigoInput.value = result.getText();
-          codeReader.reset();
-        }
-      });
-    } else {
-      alert("No se encontró cámara");
-    }
-  } catch (error) {
-    alert("Error escáner: " + error.message);
-  }
-}
+// Cargar datos
+await cargarCategorias();
+await cargarProductos();
 
-async function buscarProducto(codigo) {
-  const { data, error } = await supabase
-    .from('productos')
-    .select('*')
-    .eq('id', codigo)
-    .single();
-
-  if (error || !data) {
-    alert("Producto no encontrado");
-    resultado.style.display = 'none';
-    return;
-  }
-
-  nombreEl.textContent = data.nombre;
-  descripcionEl.textContent = data.descripcion;
-  precioEl.textContent = data.precio_venta;
-  piezasEl.textContent = data.piezas;
-  resultado.dataset.id = data.id;
-  resultado.dataset.piezas = data.piezas;
-  resultado.style.display = 'block';
-  document.getElementById('imagen_producto').src = data.imagen_url;
-
-  // Scroll automático hacia el resultado
-  resultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-async function venderProducto() {
-  const id = resultado.dataset.id;
-  const piezasDisponibles = parseInt(resultado.dataset.piezas);
-  const cantidad = parseInt(cantidadInput.value);
-
-  if (isNaN(cantidad) || cantidad <= 0) {
-    alert("Ingresa una cantidad válida");
-    return;
-  }
-
-  if (cantidad > piezasDisponibles) {
-    alert("No hay suficientes piezas en existencia");
-    return;
-  }
-
-  const nuevasPiezas = piezasDisponibles - cantidad;
-
-  const { error } = await supabase
-    .from('productos')
-    .update({ piezas: nuevasPiezas })
-    .eq('id', id);
-
-  if (error) {
-    alert("Error al vender: " + error.message);
-  } else {
-    alert("Venta registrada con éxito.");
-    await buscarProducto(id);
-    resultado.style.display = 'none';
-    iniciarEscaner();
-    codigoInput.value = '';
-
-  }
-}
-
-btnAceptar.addEventListener('click', () => {
-  const codigo = codigoInput.value.trim();
-  if (codigo) buscarProducto(codigo);
+// Escáner
+document.getElementById('btn-escaner').addEventListener('click', () => {
+  modalEscaner.classList.remove('oculto');
+  iniciarEscaner();
 });
 
-btnVender.addEventListener('click', venderProducto);
+document.getElementById('cerrar-escaner').addEventListener('click', () => {
+  modalEscaner.classList.add('oculto');
+  detenerEscaner();
+});
 
-// NUEVO: cargar productos
-let productos = [];
+document.getElementById('buscar-por-codigo').addEventListener('click', () => {
+  const codigo = document.getElementById('codigo-barras-input').value.trim();
+  const encontrado = productos.find(p => p.id === codigo);
+  if (encontrado) {
+    mostrarModal(encontrado);
+    detenerEscaner();
+    modalEscaner.classList.add('oculto');
+  }
+});
 
-async function cargarProductos() {
-  const { data } = await supabase.from('productos').select('*');
-  productos = data;
-  mostrarProductos();
+// Cerrar modal producto
+document.getElementById('cerrar-modal').addEventListener('click', () => {
+  modalProducto.classList.add('oculto');
+});
+
+// Agregar a venta
+btnAgregar.addEventListener('click', () => {
+  const cantidad = parseInt(modalCantidad.value);
+  if (!cantidad || cantidad < 1 || cantidad > productoActual.piezas) return;
+
+  carrito.push({ ...productoActual, cantidad });
+  renderCarrito();
+  modalProducto.classList.add('oculto');
+});
+
+// Ejecutar venta
+btnVender.addEventListener('click', async () => {
+  for (let item of carrito) {
+    const nuevoStock = item.piezas - item.cantidad;
+    await supabase.from('productos').update({ piezas: nuevoStock }).eq('id', item.id);
+  }
+  carrito = [];
+  renderCarrito();
+  await cargarProductos();
+});
+
+// Filtros
+filtroCategorias.addEventListener('change', renderProductos);
+buscarNombre.addEventListener('input', renderProductos);
+
+// Funciones de escáner
+function iniciarEscaner() {
+  qrScanner = new Html5Qrcode("reader");
+  qrScanner.start(
+    { facingMode: "environment" },
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 100 },
+      formatsToSupport: [
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.UPC_A,
+        Html5QrcodeSupportedFormats.UPC_E,
+        Html5QrcodeSupportedFormats.CODE_128
+      ]
+    },
+    (decodedText) => {
+      const producto = productos.find(p => p.id === decodedText);
+      if (producto) {
+        detenerEscaner();
+        document.getElementById('modal-escaner').classList.add('oculto');
+        mostrarModal(producto);
+      }
+    },
+    (err) => {
+      // silencioso
+    }
+  ).catch(err => {
+    console.error("Error al iniciar escáner:", err);
+    alert("No se pudo acceder a la cámara.");
+  });
+}
+
+function detenerEscaner() {
+  if (qrScanner) {
+    qrScanner.stop().then(() => qrScanner.clear());
+  }
+}
+
+// Renderizar
+function mostrarModal(p) {
+  productoActual = p;
+  modalImg.src = p.imagen_url;
+  modalNombre.textContent = p.nombre;
+  modalStock.textContent = `Stock: ${p.piezas}`;
+  modalPrecio.textContent = `Precio: $${p.precio_venta}`;
+  modalCantidad.value = 1;
+  modalProducto.classList.remove('oculto');
+}
+
+function renderCarrito() {
+  listaVenta.innerHTML = '';
+  let total = 0;
+  carrito.forEach(p => {
+    total += p.precio_venta * p.cantidad;
+    const div = document.createElement('div');
+    div.className = 'producto-venta';
+    div.textContent = `${p.nombre} - ${p.cantidad} pz`;
+    listaVenta.appendChild(div);
+  });
+  totalVenta.textContent = `$${total.toFixed(2)}`;
 }
 
 async function cargarCategorias() {
   const { data } = await supabase.from('categorias').select('*');
+  filtroCategorias.innerHTML = `<option value="todas">Todas</option>`;
   data.forEach(cat => {
-    const option = document.createElement('option');
-    option.value = cat.id;
-    option.textContent = cat.nombre;
-    filtroCat.appendChild(option);
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = cat.nombre;
+    filtroCategorias.appendChild(opt);
   });
 }
 
-function mostrarProductos() {
+async function cargarProductos() {
+  const { data } = await supabase.from('productos').select('*');
+  productos = data;
+  renderProductos();
+}
+
+function renderProductos() {
+  const filtro = filtroCategorias.value;
   const texto = buscarNombre.value.toLowerCase();
-  const categoria = filtroCat.value;
 
   const filtrados = productos.filter(p => {
-    const nombreCoincide = p.nombre.toLowerCase().includes(texto);
-    const categoriaCoincide = categoria === 'todas' || p.categoria_id == categoria;
-    return nombreCoincide && categoriaCoincide;
+    const coincideCategoria = filtro === 'todas' || p.categoria_id == filtro;
+    const coincideTexto = p.nombre.toLowerCase().includes(texto);
+    return coincideCategoria && coincideTexto;
   });
 
-  lista.innerHTML = '';
+  listaProductos.innerHTML = '';
   filtrados.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'producto-item';
-    div.textContent = `${p.nombre} ($${p.precio_venta})`;
-    div.addEventListener('click', () => buscarProducto(p.id));
-    lista.appendChild(div);
+    const card = document.createElement('div');
+    card.className = 'producto-card';
+    card.innerHTML = `<img src="${p.imagen_url}" /><p>${p.nombre}</p>`;
+    card.addEventListener('click', () => mostrarModal(p));
+    listaProductos.appendChild(card);
   });
 }
-
-filtroCat.addEventListener('change', mostrarProductos);
-buscarNombre.addEventListener('input', mostrarProductos);
-
-iniciarEscaner();
-cargarProductos();
-cargarCategorias();
