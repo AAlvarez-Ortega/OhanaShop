@@ -11,6 +11,15 @@ const buscador = document.getElementById('buscar-nombre');
 const totalProductos = document.getElementById('total-productos');
 const totalPiezas = document.getElementById('total-piezas');
 
+const modal = document.getElementById('modal-producto');
+const cerrarModal = document.getElementById('cerrar-modal');
+const modalImg = document.getElementById('modal-img');
+const modalNombre = document.getElementById('modal-nombre');
+const modalCodigo = document.getElementById('modal-codigo');
+const modalPrecio = document.getElementById('modal-precio');
+const modalPiezas = document.getElementById('modal-piezas');
+const btnAgregarStock = document.getElementById('btn-agregar-stock');
+
 let todosLosProductos = [];
 
 // Cargar resumen de almacen
@@ -49,8 +58,16 @@ function mostrarProductos(productos) {
     `;
 
     div.addEventListener('click', () => {
-      localStorage.setItem('codigo_barras', prod.id);
-      window.location.href = 'productoexistente.html';
+      modalImg.src = prod.imagen_url;
+      modalNombre.textContent = prod.nombre;
+      modalCodigo.textContent = `Código de barras: ${prod.id}`;
+      modalPrecio.textContent = `Precio: $${prod.precio_venta}`;
+      modalPiezas.textContent = `Piezas: ${prod.piezas}`;
+      btnAgregarStock.onclick = () => {
+        localStorage.setItem('codigo_barras', prod.id);
+        window.location.href = 'productoexistente.html';
+      };
+      modal.classList.remove('oculto');
     });
 
     lista.appendChild(div);
@@ -87,8 +104,21 @@ function aplicarFiltros() {
   mostrarProductos(filtrados);
 }
 
+// Eventos
 select.addEventListener('change', aplicarFiltros);
 buscador.addEventListener('input', aplicarFiltros);
+
+// Cerrar modal con botón ✖️
+cerrarModal.addEventListener('click', () => {
+  modal.classList.add('oculto');
+});
+
+// Cerrar modal al hacer clic fuera del contenido
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) {
+    modal.classList.add('oculto');
+  }
+});
 
 // Iniciar
 await cargarResumen();

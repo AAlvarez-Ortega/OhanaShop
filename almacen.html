@@ -30,6 +30,22 @@
     <!-- Productos dinámicos -->
   </main>
 
+      <!-- Modal de información de producto -->
+    <div id="modal-producto" class="modal-producto oculto">
+      <div class="contenido-modal">
+        <span id="cerrar-modal" class="cerrar-modal">✖</span>
+        <div class="modal-imagen">
+          <img id="modal-img" src="" alt="Imagen del producto" />
+        </div>
+        <h3 id="modal-nombre">Nombre del producto</h3>
+        <p id="modal-codigo">Código de barras: </p>
+        <p id="modal-precio">Precio: </p>
+        <p id="modal-piezas">Piezas: </p>
+        <button id="btn-agregar-stock">Agregar stock</button>
+      </div>
+    </div>
+
+
   <script type="module" src="JS/almacen.js"></script>
 </body>
 </html>
