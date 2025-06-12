@@ -22,12 +22,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (userData.foto) {
       userIcon.innerHTML = `<img src="${userData.foto}" alt="user" />`;
     } else {
-      userIcon.innerHTML = '👤';
+      userIcon.innerHTML = '';
     }
     userIcon.style.cursor = 'pointer';
   } else {
     loginText.textContent = 'Inicio de sesión';
-    userIcon.innerHTML = '👤';
+    userIcon.innerHTML = '';
     userIcon.style.cursor = 'pointer';
   }
 

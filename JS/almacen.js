@@ -8,11 +8,19 @@ const supabase = createClient(
 const select = document.getElementById('filtro-categorias');
 const lista = document.getElementById('lista-productos');
 const buscador = document.getElementById('buscar-nombre');
-const botonLector = document.getElementById('abrir-lector');
-const modalLector = document.getElementById('modal-lector');
-const cerrarLector = document.getElementById('cerrar-lector');
+const totalProductos = document.getElementById('total-productos');
+const totalPiezas = document.getElementById('total-piezas');
 
 let todosLosProductos = [];
+
+// Cargar resumen de almacen
+async function cargarResumen() {
+  const { data, error } = await supabase.from('Almacen').select('*').single();
+  if (!error && data) {
+    totalProductos.textContent = `Productos: ${data.total_productos}`;
+    totalPiezas.textContent = `Piezas totales: ${data.total_piezas}`;
+  }
+}
 
 // Cargar categorías
 const { data: categorias } = await supabase.from('categorias').select('*');
@@ -33,16 +41,11 @@ function mostrarProductos(productos) {
 
   productos.forEach(prod => {
     const div = document.createElement('div');
-    div.className = 'producto';
+    div.className = 'producto tarjeta-mosaico';
     div.innerHTML = `
-      <div class="producto-info">
-        <strong>${prod.nombre}</strong>
-        <div class="producto-imagen">
-          <img src="${prod.imagen_url}" alt="img" />
-        </div>
-        <div class="producto-piezas">${prod.piezas} pz en existencia</div>
+      <div class="producto-imagen">
+        <img src="${prod.imagen_url}" alt="img" />
       </div>
-      <div class="producto-precio">$${prod.precio_venta}</div>
     `;
 
     div.addEventListener('click', () => {
@@ -84,39 +87,9 @@ function aplicarFiltros() {
   mostrarProductos(filtrados);
 }
 
-// Eventos de filtros
 select.addEventListener('change', aplicarFiltros);
 buscador.addEventListener('input', aplicarFiltros);
 
-// Abrir lector
-botonLector.addEventListener('click', () => {
-  modalLector.classList.remove('oculto');
-  const qr = new Html5Qrcode("lector");
-  qr.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
-  const producto = todosLosProductos.find(p => p.id === decodedText.trim());
-
-  if (producto) {
-    localStorage.setItem('codigo_barras', producto.id);
-    qr.stop().then(() => {
-      modalLector.classList.add('oculto');
-      window.location.href = 'productoexistente.html';
-    });
-  } else {
-    alert("Producto no encontrado");
-    qr.stop();
-    modalLector.classList.add('oculto');
-  }
-});
-
-});
-
-// Cerrar lector
-cerrarLector.addEventListener('click', () => {
-  modalLector.classList.add('oculto');
-  Html5Qrcode.getCameras().then(cameras => {
-    if (cameras.length) Html5Qrcode.stop();
-  });
-});
-
-// Cargar al iniciar
+// Iniciar
+await cargarResumen();
 cargarProductos();

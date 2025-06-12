@@ -9,6 +9,10 @@
 <body>
   <header>
     <h2>Almacén</h2>
+    <div class="resumen-almacen">
+      <span id="total-productos">Productos: 0</span>
+      <span id="total-piezas">Piezas totales: 0</span>
+    </div>
   </header>
 
   <section class="barra-filtros">
@@ -20,23 +24,12 @@
       <input type="text" id="buscar-nombre" placeholder="Buscar por nombre..." />
       <span class="icono-lupa">🔍</span>
     </div>
-
-    <button id="abrir-lector" class="btn-lector">📷 Escanear</button>
   </section>
 
   <main id="lista-productos" class="lista-productos">
     <!-- Productos dinámicos -->
   </main>
 
-  <!-- Modal lector de código de barras -->
-  <div id="modal-lector" class="modal-lector oculto">
-    <div id="lector"></div>
-    <button id="cerrar-lector" class="btn-cerrar">Cerrar</button>
-  </div>
-
-  <!-- Librerías -->
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" type="module"></script>
   <script type="module" src="JS/almacen.js"></script>
 </body>
 </html>
