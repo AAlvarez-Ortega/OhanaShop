@@ -130,7 +130,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   await cargarProductos();
 
   async function cargarProductos(filtroCategoria = null) {
-    let query = supabase.from('productos').select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+    let query = supabase
+      .from('productos')
+      .select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+
     if (filtroCategoria && filtroCategoria !== 'todos') {
       query = query.eq('categoria_id', filtroCategoria);
     }
@@ -140,26 +143,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!error && productos) {
       productsContainer.innerHTML = '';
 
-      productos.forEach(producto => {
-        const card = document.createElement('div');
-        card.classList.add('product-card');
-        card.style.cursor = 'pointer';
+      const isMobile = window.innerWidth <= 768;
 
-        card.innerHTML = `
-          <div class="image-container">
-            <img src="${producto.imagen_url}" alt="${producto.nombre}" />
-          </div>
-          <p><strong>${producto.nombre}</strong></p>
-          <p><strong>$${producto.precio_venta}</strong></p>
-          <p><small>${producto.piezas} piezas</small></p>
-        `;
+      if (isMobile) {
+        for (let i = 0; i < productos.length; i += 4) {
+          const fila = document.createElement('div');
+          fila.classList.add('carousel-row');
 
-        card.addEventListener('click', () => {
-          mostrarModalProducto(producto);
+          const grupo = productos.slice(i, i + 4);
+          grupo.forEach(producto => {
+            const card = document.createElement('div');
+            card.classList.add('product-card');
+            card.style.cursor = 'pointer';
+
+            card.innerHTML = `
+              <div class="image-container">
+                <img src="${producto.imagen_url}" alt="${producto.nombre}" />
+              </div>
+              <p><strong>${producto.nombre}</strong></p>
+              <p><strong>$${producto.precio_venta}</strong></p>
+              <p><small>${producto.piezas} piezas</small></p>
+            `;
+
+            card.addEventListener('click', () => {
+              mostrarModalProducto(producto);
+            });
+
+            fila.appendChild(card);
+          });
+
+          productsContainer.appendChild(fila);
+        }
+      } else {
+        productos.forEach(producto => {
+          const card = document.createElement('div');
+          card.classList.add('product-card');
+          card.style.cursor = 'pointer';
+
+          card.innerHTML = `
+            <div class="image-container">
+              <img src="${producto.imagen_url}" alt="${producto.nombre}" />
+            </div>
+            <p><strong>${producto.nombre}</strong></p>
+            <p><strong>$${producto.precio_venta}</strong></p>
+            <p><small>${producto.piezas} piezas</small></p>
+          `;
+
+          card.addEventListener('click', () => {
+            mostrarModalProducto(producto);
+          });
+
+          productsContainer.appendChild(card);
         });
-
-        productsContainer.appendChild(card);
-      });
+      }
     }
   }
 

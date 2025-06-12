@@ -318,47 +318,47 @@ header {
   box-shadow: 0 0 0 2px rgba(122, 0, 60, 0.3);
 }
 
+/* ------- RESPONSIVE DESKTOP -------- */
 @media (min-width: 768px) {
   #filtro-categorias {
     width: 200px;
   }
-}
 
-/* --- RESPONSIVE PARA MÓVILES --- */
-@media (max-width: 768px) {
   .products {
-    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    padding: 10px;
+  }
+
+  .product-card {
+    height: 320px;
   }
 }
 
-@media (max-width: 480px) {
-  .products {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* ------- RESPONSIVE MÓVIL: CARRUSEL POR FILA -------- */
 @media (max-width: 768px) {
-  .products {
+  .carousel-row {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 10px;
-    padding: 10px;
+    gap: 14px;
+    margin-bottom: 25px;
+    padding-left: 14px;
   }
 
-  .product-card {
-    flex: 0 0 25%; /* 100% ÷ 4 tarjetas = 25% */
-    max-width: 25%;
-    scroll-snap-align: start;
-    min-width: 200px; /* asegura un tamaño mínimo legible */
-    height: auto;
-  }
-
-  .products::-webkit-scrollbar {
+  .carousel-row::-webkit-scrollbar {
     display: none;
   }
-}
 
+  .carousel-row .product-card {
+    flex: 0 0 80%;
+    max-width: 80%;
+    min-width: 250px;
+    scroll-snap-align: start;
+    height: auto;
+  }
+}
 
