@@ -2,29 +2,54 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Categorías | OhanaShop</title>
   <link rel="stylesheet" href="css/categorias-style.css" />
+  <link rel="stylesheet" href="css/footer.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+  <!-- Barra superior -->
   <header class="topbar">
-    <button onclick="history.back()">⬅</button>
+    <button onclick="location.href='index.html'">⬅</button>
+
     <h1>Categorías</h1>
+    <button id="abrir-agregar" title="Agregar categoría">➕</button>
   </header>
 
   <div class="container">
-    <form id="form-categoria">
-      <input type="text" id="nombre" placeholder="Nueva categoría" required />
-      <button type="submit" id="btn-submit">Guardar</button>
-    </form>
-
+    <!-- Buscador -->
+    <input type="text" id="buscar-categoria" placeholder="Buscar categoría...">
     <p id="mensaje"></p>
 
+    <!-- Lista de categorías -->
     <ul id="lista-categorias"></ul>
   </div>
 
-  <script src="JS/categorias.js"></script>
-  <script src="JS/footer.js" type="module"></script>
+  <!-- Modal edición categoría -->
+  <div id="modal-categoria" class="modal-categoria oculto">
+    <div class="contenido-modal">
+      <span id="cerrar-modal" class="cerrar-modal">✖</span>
+      <input type="text" id="modal-nombre" placeholder="Editar nombre..." />
+      <div class="acciones">
+        <button id="btn-editar">Actualizar</button>
+        <button id="btn-eliminar">Eliminar</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Modal agregar categoría -->
+  <div id="modal-agregar" class="modal-categoria oculto">
+    <div class="contenido-modal">
+      <span id="cerrar-agregar" class="cerrar-modal">✖</span>
+      <h3>Agregar categoría</h3>
+      <input type="text" id="nombre-nueva" placeholder="Nombre de la nueva categoría" />
+      <button id="btn-agregar">Guardar</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="JS/categorias.js"></script>
+  <script type="module" src="JS/footer.js"></script>
 </body>
 </html>

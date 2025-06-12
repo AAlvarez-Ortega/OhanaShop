@@ -4,79 +4,116 @@ const supabase = window.supabase.createClient(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('form-categoria');
-  const inputNombre = document.getElementById('nombre');
+  const buscarInput = document.getElementById('buscar-categoria');
   const mensaje = document.getElementById('mensaje');
   const lista = document.getElementById('lista-categorias');
-  const btnSubmit = document.getElementById('btn-submit');
 
-  let categoriaEditando = null;
+  const modal = document.getElementById('modal-categoria');
+  const cerrarModal = document.getElementById('cerrar-modal');
+  const modalNombre = document.getElementById('modal-nombre');
+  const btnEditar = document.getElementById('btn-editar');
+  const btnEliminar = document.getElementById('btn-eliminar');
 
-  cargarCategorias();
+  const modalAgregar = document.getElementById('modal-agregar');
+  const abrirAgregar = document.getElementById('abrir-agregar');
+  const cerrarAgregar = document.getElementById('cerrar-agregar');
+  const inputNueva = document.getElementById('nombre-nueva');
+  const btnAgregar = document.getElementById('btn-agregar');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const nombre = inputNombre.value.trim();
-    if (!nombre) return;
+  let categoriasGlobal = [];
+  let idSeleccionado = null;
 
-    if (categoriaEditando) {
-      // Editar existente
-      const { error } = await supabase
-        .from('categorias')
-        .update({ nombre })
-        .eq('id', categoriaEditando);
+  // 🔍 Buscar categoría por texto
+  buscarInput.addEventListener('input', () => {
+    const texto = buscarInput.value.toLowerCase();
+    const filtradas = categoriasGlobal.filter(c => c.nombre.toLowerCase().includes(texto));
+    renderizarCategorias(filtradas);
+  });
 
-      if (error) {
-        mensaje.textContent = "❌ Error al actualizar";
-      } else {
-        mensaje.textContent = "✅ Categoría actualizada";
-        categoriaEditando = null;
-        btnSubmit.textContent = "Guardar";
-        form.reset();
-        cargarCategorias();
-      }
-    } else {
-      // Crear nueva
-      const { error } = await supabase.from('categorias').insert([{ nombre }]);
-      if (error) {
-        mensaje.textContent = "❌ Error al guardar";
-      } else {
-        mensaje.textContent = "✅ Categoría agregada";
-        form.reset();
-        cargarCategorias();
-      }
+  // ➕ Abrir modal de agregar
+  abrirAgregar.addEventListener('click', () => {
+    inputNueva.value = '';
+    modalAgregar.classList.remove('oculto');
+  });
+
+  cerrarAgregar.addEventListener('click', () => {
+    modalAgregar.classList.add('oculto');
+  });
+
+  modalAgregar.addEventListener('click', (e) => {
+    if (e.target === modalAgregar) {
+      modalAgregar.classList.add('oculto');
     }
   });
 
-  async function cargarCategorias() {
-    const { data: categorias, error } = await supabase.from('categorias').select('*').order('nombre', { ascending: true });
+  btnAgregar.addEventListener('click', async () => {
+    const nombre = inputNueva.value.trim();
+    if (!nombre) return;
 
+    const { error } = await supabase.from('categorias').insert([{ nombre }]);
+    if (error) {
+      alert("❌ Error al guardar");
+    } else {
+      modalAgregar.classList.add('oculto');
+      cargarCategorias();
+    }
+  });
+
+  // 📝 Modal edición
+  btnEditar.addEventListener('click', async () => {
+    const nuevoNombre = modalNombre.value.trim();
+    if (!nuevoNombre) return;
+    const { error } = await supabase.from('categorias').update({ nombre: nuevoNombre }).eq('id', idSeleccionado);
+    if (error) {
+      alert('❌ Error al actualizar');
+    } else {
+      modal.classList.add('oculto');
+      cargarCategorias();
+    }
+  });
+
+  btnEliminar.addEventListener('click', async () => {
+    const confirmar = confirm('¿Estás seguro de eliminar esta categoría?');
+    if (!confirmar) return;
+    const { error } = await supabase.from('categorias').delete().eq('id', idSeleccionado);
+    if (error) {
+      alert('❌ Error al eliminar');
+    } else {
+      modal.classList.add('oculto');
+      cargarCategorias();
+    }
+  });
+
+  cerrarModal.addEventListener('click', () => modal.classList.add('oculto'));
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('oculto');
+  });
+
+  // 🧩 Renderizar categorías
+  function renderizarCategorias(listaFiltrada) {
+    lista.innerHTML = '';
+    listaFiltrada.forEach(cat => {
+      const li = document.createElement('li');
+      li.textContent = cat.nombre;
+      li.addEventListener('click', () => {
+        modal.classList.remove('oculto');
+        modalNombre.value = cat.nombre;
+        idSeleccionado = cat.id;
+      });
+      lista.appendChild(li);
+    });
+  }
+
+  // 🚀 Cargar categorías
+  async function cargarCategorias() {
+    const { data, error } = await supabase.from('categorias').select('*').order('nombre', { ascending: true });
     if (error) {
       mensaje.textContent = "❌ Error al cargar categorías";
       return;
     }
-
-    lista.innerHTML = '';
-    categorias.forEach(cat => {
-      const li = document.createElement('li');
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = cat.nombre;
-      input.disabled = true;
-
-      const btnEditar = document.createElement('button');
-      btnEditar.textContent = 'Editar';
-      btnEditar.addEventListener('click', () => {
-        inputNombre.value = cat.nombre;
-        categoriaEditando = cat.id;
-        btnSubmit.textContent = "Actualizar";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      li.appendChild(input);
-      li.appendChild(btnEditar);
-      lista.appendChild(li);
-    });
+    categoriasGlobal = data;
+    renderizarCategorias(data);
   }
+
+  cargarCategorias();
 });
