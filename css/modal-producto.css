@@ -1,0 +1,89 @@
+.modal-producto {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-producto.oculto {
+  display: none;
+}
+
+.modal-contenido {
+  background: #fff;
+  padding: 24px;
+  border-radius: 20px;
+  max-width: 90%;
+  width: 360px;
+  text-align: center;
+  position: relative;
+  animation: fadeInZoom 0.3s ease;
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cerrar-modal {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #777;
+}
+
+.modal-img img {
+  max-width: 100%;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+  margin-bottom: 14px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#modal-cantidad {
+  margin: 10px 0;
+  padding: 8px;
+  width: 80px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+#btn-agregar-carrito {
+  background-color: #7a003c;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+#btn-agregar-carrito:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.msg-sesion {
+  color: #c00;
+  font-size: 14px;
+  margin-top: 10px;
+}

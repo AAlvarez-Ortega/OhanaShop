@@ -14,13 +14,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnVentas = document.getElementById('btn-ventas');
   const filtroCategorias = document.getElementById('filtro-categorias');
 
-  let userData = await obtenerUsuarioActivo();
+  const modal = document.getElementById('modal-producto');
+  const cerrarModal = document.getElementById('cerrar-modal');
+  const modalImg = document.getElementById('modal-img');
+  const modalNombre = document.getElementById('modal-nombre');
+  const modalDescripcion = document.getElementById('modal-descripcion');
+  const modalPrecio = document.getElementById('modal-precio');
+  const modalStock = document.getElementById('modal-stock');
+  const modalCantidad = document.getElementById('modal-cantidad');
+  const btnAgregarCarrito = document.getElementById('btn-agregar-carrito');
+  const mensajeSesion = document.getElementById('modal-msg');
+
+  let usuario = await obtenerUsuarioActivo();
 
   // Mostrar icono e imagen de sesión
-  if (userData) {
+  if (usuario) {
     loginText.textContent = 'Sesión iniciada';
-    if (userData.foto) {
-      userIcon.innerHTML = `<img src="${userData.foto}" alt="user" />`;
+    if (usuario.foto) {
+      userIcon.innerHTML = `<img src="${usuario.foto}" alt="user" />`;
     } else {
       userIcon.innerHTML = '';
     }
@@ -34,10 +45,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Menú flotante
   userIcon.addEventListener('click', () => {
     floatingMenu.classList.toggle('show');
-    renderFloatingMenu(userData);
+    renderFloatingMenu(usuario);
   });
 
-  // Cerrar al hacer clic fuera
+  // Cerrar menú flotante si se hace clic fuera
   document.addEventListener('click', (e) => {
     const clickedInside = floatingMenu.contains(e.target) || userIcon.contains(e.target);
     if (!clickedInside) {
@@ -45,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Construir menú flotante
   function renderFloatingMenu(user) {
     if (user) {
       floatingMenu.innerHTML = `
@@ -77,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Mostrar botones según rol
-  if (userData?.rol === 'administrador') {
+  if (usuario?.rol === 'administrador') {
     if (btnAlmacen) {
       btnAlmacen.style.display = 'block';
       btnAlmacen.addEventListener('click', () => window.location.href = 'almacen.html');
@@ -98,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Cargar filtro de categorías (solo para clientes)
-  if (filtroCategorias && userData?.rol !== 'administrador') {
+  if (filtroCategorias && usuario?.rol !== 'administrador') {
     filtroCategorias.style.display = 'block';
     const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
     if (!error && categorias) {
@@ -145,14 +155,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         card.addEventListener('click', () => {
-          floatingMenu.classList.remove('show');
-          window.location.href = `Vproductos.html?id=${producto.id}`;
+          mostrarModalProducto(producto);
         });
 
         productsContainer.appendChild(card);
       });
     }
   }
+
+  function mostrarModalProducto(producto) {
+    modalImg.src = producto.imagen_url;
+    modalNombre.textContent = producto.nombre;
+    modalDescripcion.textContent = producto.descripcion;
+    modalPrecio.textContent = producto.precio_venta;
+    modalStock.textContent = producto.piezas;
+    modalCantidad.value = 1;
+
+    if (usuario) {
+      btnAgregarCarrito.disabled = false;
+      mensajeSesion.classList.add('oculto');
+    } else {
+      btnAgregarCarrito.disabled = true;
+      mensajeSesion.classList.remove('oculto');
+    }
+
+    modal.classList.remove('oculto');
+  }
+
+  cerrarModal.addEventListener('click', () => {
+    modal.classList.add('oculto');
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('oculto');
+    }
+  });
 
   // Menú lateral
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));

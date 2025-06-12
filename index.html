@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ohana Shop</title>
   <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/modal-producto.css">
   <link rel="stylesheet" href="css/index-style.css">
   <!-- Carga Supabase UMD antes del script -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="JS/auth.js" type="module"></script>
+  <script src="JS/modalProducto" type="module"></script>
   <script src="JS/index.js" type="module"></script>
 
 
@@ -29,6 +31,30 @@
   <div class="floating-user-menu" id="floating-user-menu">
     <!-- Se llenará dinámicamente con JS -->
   </div>
+
+
+  <!-- 🔍 Modal de producto -->
+<div id="modal-producto" class="modal-producto oculto">
+  <div class="modal-contenido">
+    <span class="cerrar-modal" id="cerrar-modal">✖</span>
+    <div class="modal-img">
+      <img id="modal-img" src="" alt="Producto" />
+    </div>
+    <h2 id="modal-nombre">Nombre del producto</h2>
+    <p id="modal-descripcion">Descripción del producto</p>
+    <p><strong>Precio:</strong> $<span id="modal-precio"></span></p>
+    <p><strong>Stock:</strong> <span id="modal-stock"></span> pz</p>
+    
+    <label for="modal-cantidad">Pz:</label>
+    <input type="number" id="modal-cantidad" min="1" value="1" />
+    
+    <button id="btn-agregar-carrito" disabled>
+      🛒 Agregar al carrito
+    </button>
+    <p id="modal-msg" class="msg-sesion oculto">Inicia sesión para comprar</p>
+  </div>
+</div>
+
 
   <!-- Menú lateral -->
   <aside class="sidebar" id="sidebar">
