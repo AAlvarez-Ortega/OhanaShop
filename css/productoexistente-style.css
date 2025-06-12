@@ -1,106 +1,140 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: hsl(255, 40%, 94%);
+  background-color: #f8f8f8;
 }
 
-header {
-  background-color: #F5F1DA;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  padding: 20px;
-}
-
-.card {
-  background: #f5f5f5;
-  padding: 25px;
-  border-radius: 25px;
-  max-width: 450px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-label {
-  font-weight: bold;
-  margin-bottom: 4px;
-  font-size: 14px;
-  color: #333;
-}
-
-input, textarea {
-  border: none;
-  background-color: #d9d9d9;
-  border-radius: 15px;
-  padding: 12px;
-  font-size: 14px;
-  resize: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-textarea {
-  min-height: 70px;
-}
-
-button {
-  background-color:#8e8ef1;
-  color: white;
-  padding: 10px;
-  border-radius: 15px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background-color: #8e8ef1;
-}
-
-.buttons {
+.header-producto {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-}
-
-.preview {
-  flex: 1;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 16px;
+  background-color: #F5F1DA;
 }
 
-.preview img {
+.header-producto h2 {
+  margin: 0;
+}
+
+.acciones button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+
+.contenido-producto {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  max-width: 650px;
-  border-radius: 25px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  height: calc(100vh - 70px); /* Ajusta para restar header */
+  gap: 0;
+}
+
+.tarjeta-imagen,
+.tarjeta-info {
+  flex: 1;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+height: 1.5;
+}
+
+.tarjeta-info h3 {
+  margin-bottom: 10px;
+}
+
+.tarjeta-info p {
+  margin: 0;
+}
+
+
+.tarjeta-imagen img {
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .container {
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal.oculto {
+  display: none;
+}
+
+.modal-contenido {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 380px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-contenido input,
+.modal-contenido textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.modal-contenido button {
+  background-color: #7a003c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-contenido .btn-eliminar {
+  background-color: #c00;
+}
+
+.cerrar {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .contenido-producto {
     flex-direction: column;
-    padding: 15px;
+    height: auto;
   }
 
-  .card {
-    max-width: 100%;
+  .tarjeta-imagen,
+  .tarjeta-info {
+    height: auto;
+    padding: 20px;
   }
 
-  .preview img {
+  .tarjeta-imagen img {
     max-width: 100%;
+    height: auto;
   }
 }

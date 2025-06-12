@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Producto existente</title>
-  <link rel="stylesheet" href="css/footer.css" />
-  <link rel="stylesheet" href="css/productoexistente-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producto Existente</title>
+  <link rel="stylesheet" href="css/productoexistente-style.css" />
 </head>
 <body>
-  <header>
-    <button onclick="window.location.href='index.html'">←</button>
+  <header class="header-producto">
+    <h2>Producto</h2>
+    <div class="acciones">
+      <button id="btn-add" title="Agregar stock">➕</button>
+      <button id="btn-edit" title="Editar">✏️</button>
+      <button id="btn-delete" title="Eliminar">🗑️</button>
+    </div>
   </header>
 
-  <main class="container">
-    <div class="card">
-      <h2>Producto Existente</h2>
-
-      <label for="id">Código de barras</label>
-      <input type="text" id="id" readonly>
-
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre">
-
-      <label for="descripcion">Descripción</label>
-      <textarea id="descripcion"></textarea>
-
-      <label for="piezas">Piezas en existencia</label>
-      <input type="number" id="piezas" readonly>
-
-      <label for="precio_compra">Precio de compra</label>
-      <input type="number" id="precio_compra" readonly>
-
-      <label for="precio_venta">Precio de venta</label>
-      <input type="number" id="precio_venta">
-
-      <div class="buttons">
-        <button id="editar">Editar</button>
-        <button id="eliminar">Eliminar</button>
-      </div>
-
-      <h3>Agregar Inventario</h3>
-
-      <label for="nuevas_piezas">Cantidad a agregar</label>
-      <input type="number" id="nuevas_piezas">
-      <button id="agregar_piezas">Agregar</button>
+  <main class="contenido-producto">
+    <div class="tarjeta-imagen">
+      <img id="img-producto" src="" alt="Imagen" />
     </div>
-
-    <div class="preview">
-      <img id="imagen_producto" src="" alt="Imagen del producto">
+    <div class="tarjeta-info">
+      <h3 id="nombre-producto">Nombre</h3>
+      <p id="codigo-producto">Código: </p>
+      <p id="descripcion-producto">Descripción: </p>
+      <p id="precio-producto">Precio: $</p>
+      <p id="precio-compra">Precio compra: $</p>
+      <p id="stock-producto">Piezas en stock: </p>
     </div>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="JS/productoexistente.js"></script>
-  <script src="JS/footer.js" type="module"></script>
+  <!-- Modal: Agregar Stock -->
+  <div id="modal-add" class="modal oculto">
+    <div class="modal-contenido">
+      <span class="cerrar" data-close="modal-add">✖</span>
+      <h3>Agregar Stock</h3>
+      <input type="number" id="input-stock" placeholder="Cantidad a agregar" min="1" />
+      <button id="confirmar-add">Agregar</button>
+    </div>
+  </div>
 
+  <!-- Modal: Editar -->
+  <div id="modal-edit" class="modal oculto">
+    <div class="modal-contenido">
+      <span class="cerrar" data-close="modal-edit">✖</span>
+      <h3>Editar Producto</h3>
+      <input type="text" id="edit-nombre" placeholder="Nuevo nombre" />
+      <textarea id="edit-descripcion" placeholder="Nueva descripción"></textarea>
+      <input type="number" id="edit-precio" placeholder="Nuevo precio de venta" min="0" />
+      <input type="file" id="edit-imagen" accept="image/*" />
+      <button id="confirmar-edit">Guardar Cambios</button>
+    </div>
+  </div>
+
+  <!-- Modal: Confirmar Eliminación -->
+  <div id="modal-delete" class="modal oculto">
+    <div class="modal-contenido">
+      <span class="cerrar" data-close="modal-delete">✖</span>
+      <h3>¿Eliminar producto?</h3>
+      <p>Esta acción no se puede deshacer.</p>
+      <button id="confirmar-delete" class="btn-eliminar">Sí, eliminar</button>
+    </div>
+  </div>
+
+  <script type="module" src="JS/productoexistente.js"></script>
 </body>
 </html>
