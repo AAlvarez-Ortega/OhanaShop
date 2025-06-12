@@ -317,9 +317,8 @@ header {
   border-color: #7a003c;
   box-shadow: 0 0 0 2px rgba(122, 0, 60, 0.3);
 }
-
-/* ------- RESPONSIVE DESKTOP -------- */
-@media (min-width: 768px) {
+/* --- DESKTOP (pantallas grandes, desde 1025px) --- */
+@media (min-width: 1025px) {
   #filtro-categorias {
     width: 200px;
   }
@@ -329,6 +328,7 @@ header {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
     padding: 10px;
+    margin-top: 20px;
   }
 
   .product-card {
@@ -336,8 +336,14 @@ header {
   }
 }
 
-/* ------- RESPONSIVE MÓVIL: CARRUSEL POR FILA -------- */
-@media (max-width: 768px) {
+/* --- TABLET: Carrusel con 4 visibles --- */
+@media (max-width: 1024px) {
+  .products {
+    display: block;
+    padding: 10px;
+    margin-top: 20px;
+  }
+
   .carousel-row {
     display: flex;
     flex-wrap: nowrap;
@@ -347,6 +353,7 @@ header {
     gap: 14px;
     margin-bottom: 25px;
     padding-left: 14px;
+    width: 100%;
   }
 
   .carousel-row::-webkit-scrollbar {
@@ -354,11 +361,19 @@ header {
   }
 
   .carousel-row .product-card {
-    flex: 0 0 80%;
-    max-width: 80%;
-    min-width: 250px;
+    flex: 0 0 25%;
+    max-width: 25%;
+    min-width: 200px;
     scroll-snap-align: start;
     height: auto;
   }
 }
 
+/* --- MÓVIL: Carrusel con 1 o 2 visibles --- */
+@media (max-width: 600px) {
+  .carousel-row .product-card {
+    flex: 0 0 80%;
+    max-width: 80%;
+    min-width: 250px;
+  }
+}
