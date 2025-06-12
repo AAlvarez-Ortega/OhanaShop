@@ -55,22 +55,42 @@ header {
   cursor: pointer;
   border: 2px solid #ddd;
 }
-.user-section {
+
+.user-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
+
+#cart-icon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s ease;
+}
+
+#cart-icon:hover {
+  transform: scale(1.1);
+}
+
 .login-text {
   font-size: 14px;
   color: #333;
 }
 
 #user-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  border: 2px solid #ddd;
 }
+
+
+.login-text {
+  font-size: 14px;
+  color: #333;
+}
+
 
 
 /* --- NUEVO DISEÑO DE MENÚ --- */
@@ -318,3 +338,14 @@ header {
   z-index: 1;
 }
 
+#cart-icon {
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 12px;
+  color: #333;
+  transition: transform 0.2s ease;
+}
+
+#cart-icon:hover {
+  transform: scale(1.1);
+}
