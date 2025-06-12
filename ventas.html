@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ventas</title>
   <link rel="stylesheet" href="css/ventas-style.css" />
+    <!-- Scripts -->
+   <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@latest"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script type="module" src="JS/ventas.js"></script>
 </head>
 <body>
   <header class="ventas-header">
@@ -51,15 +55,16 @@
     <div class="modal-escaner-contenido">
       <span class="cerrar" id="cerrar-escaner">✖</span>
       <p><strong>Escanea un producto</strong></p>
-      <div id="reader" style="width: 100%; max-width: 320px;"></div>
+      <<div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+  <video id="preview-cam" style="max-width: 100%; border-radius: 8px;"></video>
+  <button id="btn-capturar">📸 Capturar y escanear</button>
+</div>
+
       <p>o escribe el código:</p>
       <input type="text" id="codigo-barras-input" placeholder="Código de barras..." />
       <button id="buscar-por-codigo">Buscar producto</button>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
-  <script type="module" src="JS/ventas.js"></script>
 </body>
 </html>

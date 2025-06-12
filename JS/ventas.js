@@ -1,4 +1,7 @@
 import { supabase } from './auth.js';
+import { BrowserMultiFormatReader } from "https://cdn.jsdelivr.net/npm/@zxing/browser@latest/+esm";
+
+const codeReader = new BrowserMultiFormatReader();
 
 const listaProductos = document.getElementById('lista-productos');
 const filtroCategorias = document.getElementById('filtro-categorias');
@@ -17,25 +20,25 @@ const listaVenta = document.getElementById('lista-venta');
 const totalVenta = document.getElementById('total-venta');
 const btnVender = document.getElementById('btn-vender');
 
+const videoElement = document.getElementById('preview-cam');
+const btnEscaner = document.getElementById('btn-escaner');
+const cerrarEscaner = document.getElementById('cerrar-escaner');
 
-let qrScanner = null; // global
 let productos = [];
 let carrito = [];
 let productoActual = null;
 
-// Cargar datos
-await cargarCategorias();
-await cargarProductos();
+let videoInputDevice = null;
 
 // Escáner
-document.getElementById('btn-escaner').addEventListener('click', () => {
+btnEscaner.addEventListener('click', () => {
   modalEscaner.classList.remove('oculto');
-  iniciarEscaner();
+  iniciarZXing();
 });
 
-document.getElementById('cerrar-escaner').addEventListener('click', () => {
+cerrarEscaner.addEventListener('click', () => {
+  detenerZXing();
   modalEscaner.classList.add('oculto');
-  detenerEscaner();
 });
 
 document.getElementById('buscar-por-codigo').addEventListener('click', () => {
@@ -43,27 +46,20 @@ document.getElementById('buscar-por-codigo').addEventListener('click', () => {
   const encontrado = productos.find(p => p.id === codigo);
   if (encontrado) {
     mostrarModal(encontrado);
-    detenerEscaner();
+    detenerZXing();
     modalEscaner.classList.add('oculto');
   }
 });
 
-// Cerrar modal producto
-document.getElementById('cerrar-modal').addEventListener('click', () => {
-  modalProducto.classList.add('oculto');
-});
-
-// Agregar a venta
+// Modal producto
 btnAgregar.addEventListener('click', () => {
   const cantidad = parseInt(modalCantidad.value);
   if (!cantidad || cantidad < 1 || cantidad > productoActual.piezas) return;
-
   carrito.push({ ...productoActual, cantidad });
   renderCarrito();
   modalProducto.classList.add('oculto');
 });
 
-// Ejecutar venta
 btnVender.addEventListener('click', async () => {
   for (let item of carrito) {
     const nuevoStock = item.piezas - item.cantidad;
@@ -74,53 +70,42 @@ btnVender.addEventListener('click', async () => {
   await cargarProductos();
 });
 
-// Filtros
+document.getElementById('cerrar-modal').addEventListener('click', () => {
+  modalProducto.classList.add('oculto');
+});
+
 filtroCategorias.addEventListener('change', renderProductos);
 buscarNombre.addEventListener('input', renderProductos);
 
-// Funciones de escáner
-function iniciarEscaner() {
-  if (qrScanner) {
-    qrScanner.clear(); // limpiar anterior si existe
+async function iniciarZXing() {
+  const devices = await codeReader.listVideoInputDevices();
+  if (devices.length > 0) {
+    videoInputDevice = devices[0];
+    await codeReader.decodeFromVideoDevice(videoInputDevice.deviceId, videoElement, (result, err) => {
+      if (result) {
+        procesarCodigo(result.getText());
+        detenerZXing();
+      }
+    });
+  } else {
+    alert("No se detectó cámara.");
   }
-
-  qrScanner = new Html5QrcodeScanner("reader", {
-    fps: 10,
-    qrbox: { width: 300, height: 150 },
-    formatsToSupport: [
-      Html5QrcodeSupportedFormats.EAN_13,
-      Html5QrcodeSupportedFormats.UPC_A,
-      Html5QrcodeSupportedFormats.UPC_E,
-      Html5QrcodeSupportedFormats.CODE_128
-    ],
-    rememberLastUsedCamera: true,
-    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-  });
-
-  qrScanner.render(onScanSuccess, onScanFailure);
 }
 
-function onScanSuccess(decodedText) {
-  const producto = productos.find(p => p.id === decodedText);
+function detenerZXing() {
+  codeReader.reset();
+}
+
+function procesarCodigo(codigo) {
+  const producto = productos.find(p => p.id === codigo);
   if (producto) {
-    detenerEscaner();
-    document.getElementById('modal-escaner').classList.add('oculto');
     mostrarModal(producto);
-    // 🔊 Opcional: sonido o vibración
-    // new Audio("beep.mp3").play(); 
     if (navigator.vibrate) navigator.vibrate(100);
+  } else {
+    alert('Producto no encontrado: ' + codigo);
   }
 }
 
-function onScanFailure(error) {
-  // Silencioso o mostrar log si deseas
-}
-
-function detenerEscaner() {
-  if (qrScanner?.clear) qrScanner.clear();
-}
-
-// Renderizar
 function mostrarModal(p) {
   productoActual = p;
   modalImg.src = p.imagen_url;
@@ -180,3 +165,7 @@ function renderProductos() {
     listaProductos.appendChild(card);
   });
 }
+
+// Inicialización
+await cargarCategorias();
+await cargarProductos();
