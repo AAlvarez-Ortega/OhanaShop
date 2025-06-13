@@ -16,7 +16,7 @@ body {
 }
 
 header {
-  background-color: #F5F1DA;
+  background-color: #7834ff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,6 +63,7 @@ header {
   background: none;
   border: none;
   cursor: pointer;
+  
 }
 
 #user-icon {
@@ -85,7 +86,7 @@ header {
   font-size: 22px;
   cursor: pointer;
   margin-right: 12px;
-  color: #333;
+  color: #ffffff;
   transition: transform 0.2s ease;
 }
 
@@ -95,7 +96,7 @@ header {
 
 .login-text {
   font-size: 14px;
-  color: #333;
+  color: #ffffff;
 }
 
 #user-icon img {
@@ -384,13 +385,13 @@ header {
 
 /* Estilo circular para las categorías */
 .categoria-btn {
-  width: 65px;
-  height: 65px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background-color: #f1f1f1;
   border: none;
   font-size: 12px;
-  color: #333;
+  color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -404,7 +405,7 @@ header {
 
 .categoria-btn:hover,
 .categoria-btn.activa {
-  background-color: #7a003c;
+  background-color: #7834ff;
   color: white;
   transform: scale(1.05);
 }
