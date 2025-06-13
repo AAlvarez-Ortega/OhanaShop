@@ -250,4 +250,14 @@ if (!catError && categoriasScroll) {
   // Menú lateral
   menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
   closeBtn.addEventListener('click', () => sidebar.classList.remove('show'));
+
+  // Cerrar menú lateral al hacer clic fuera de él
+  document.addEventListener('click', (e) => {
+    const clickedInsideSidebar = sidebar.contains(e.target);
+    const clickedMenuToggle = menuToggle.contains(e.target);
+    if (!clickedInsideSidebar && !clickedMenuToggle) {
+      sidebar.classList.remove('show');
+    }
+  });
+;
 });
