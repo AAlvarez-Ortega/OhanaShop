@@ -107,11 +107,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (filtroCategorias) filtroCategorias.style.display = 'none';
   }
 
-  // Cargar filtro de categorías (solo para clientes)
-  if (filtroCategorias && usuario?.rol !== 'administrador') {
+// Cargar filtro de categorías (solo para clientes)
+if (usuario?.rol !== 'administrador') {
+  // Mostrar el combo box original
+  if (filtroCategorias) {
     filtroCategorias.style.display = 'block';
+
     const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
+
     if (!error && categorias) {
+      // --- COMBOBOX CLÁSICO ---
       filtroCategorias.innerHTML = `<option value="todos">Todas las categorías</option>`;
       categorias.forEach(cat => {
         const option = document.createElement('option');
@@ -122,82 +127,84 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       filtroCategorias.addEventListener('change', (e) => {
         const categoriaSeleccionada = e.target.value;
-        cargarProductos(categoriaSeleccionada);
+        cargarProductos(categoriaSeleccionada === 'todos' ? null : categoriaSeleccionada);
       });
-    }
-  }
 
-  await cargarProductos();
+      // --- BARRA SCROLLABLE ---
+      const barraCategorias = document.getElementById('barra-categorias');
+      if (barraCategorias) {
+        barraCategorias.innerHTML = '';
 
-  async function cargarProductos(filtroCategoria = null) {
-    let query = supabase
-      .from('productos')
-      .select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+        // Botón "Todas"
+        const btnTodas = document.createElement('button');
+        btnTodas.classList.add('categoria-btn', 'activa');
+        btnTodas.textContent = 'Todas';
+        btnTodas.dataset.id = 'todos';
+        barraCategorias.appendChild(btnTodas);
 
-    if (filtroCategoria && filtroCategoria !== 'todos') {
-      query = query.eq('categoria_id', filtroCategoria);
-    }
+        // Botones de cada categoría
+        categorias.forEach(cat => {
+          const btn = document.createElement('button');
+          btn.classList.add('categoria-btn');
+          btn.textContent = cat.nombre;
+          btn.dataset.id = cat.id;
+          barraCategorias.appendChild(btn);
+        });
 
-    const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
-
-    if (!error && productos) {
-      productsContainer.innerHTML = '';
-
-      const isMobile = window.innerWidth <= 768;
-
-      if (isMobile) {
-        for (let i = 0; i < productos.length; i += 4) {
-          const fila = document.createElement('div');
-          fila.classList.add('carousel-row');
-
-          const grupo = productos.slice(i, i + 4);
-          grupo.forEach(producto => {
-            const card = document.createElement('div');
-            card.classList.add('product-card');
-            card.style.cursor = 'pointer';
-
-            card.innerHTML = `
-              <div class="image-container">
-                <img src="${producto.imagen_url}" alt="${producto.nombre}" />
-              </div>
-              <p><strong>${producto.nombre}</strong></p>
-              <p><strong>$${producto.precio_venta}</strong></p>
-              <p><small>${producto.piezas} piezas</small></p>
-            `;
-
-            card.addEventListener('click', () => {
-              mostrarModalProducto(producto);
-            });
-
-            fila.appendChild(card);
-          });
-
-          productsContainer.appendChild(fila);
-        }
-      } else {
-        productos.forEach(producto => {
-          const card = document.createElement('div');
-          card.classList.add('product-card');
-          card.style.cursor = 'pointer';
-
-          card.innerHTML = `
-            <div class="image-container">
-              <img src="${producto.imagen_url}" alt="${producto.nombre}" />
-            </div>
-            <p><strong>${producto.nombre}</strong></p>
-            <p><strong>$${producto.precio_venta}</strong></p>
-            <p><small>${producto.piezas} piezas</small></p>
-          `;
-
-          card.addEventListener('click', () => {
-            mostrarModalProducto(producto);
-          });
-
-          productsContainer.appendChild(card);
+        // Clic en botones de barra scrollable
+        barraCategorias.addEventListener('click', (e) => {
+          if (e.target.classList.contains('categoria-btn')) {
+            document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('activa'));
+            e.target.classList.add('activa');
+            const id = e.target.dataset.id;
+            cargarProductos(id === 'todos' ? null : id);
+          }
         });
       }
     }
   }
+}
+
+
+  await cargarProductos();
+
+  async function cargarProductos(filtroCategoria = null) {
+  let query = supabase
+    .from('productos')
+    .select('id, nombre, descripcion, piezas, precio_venta, imagen_url, categoria_id');
+
+  if (filtroCategoria && filtroCategoria !== 'todos') {
+    query = query.eq('categoria_id', filtroCategoria);
+  }
+
+  const { data: productos, error } = await query.order('fecha_creacion', { ascending: false });
+
+  if (!error && productos) {
+    productsContainer.innerHTML = '';
+
+    productos.forEach(producto => {
+      const card = document.createElement('div');
+      card.classList.add('product-card');
+      card.style.cursor = 'pointer';
+
+      card.innerHTML = `
+        <div class="image-container">
+          <img src="${producto.imagen_url}" alt="${producto.nombre}" />
+        </div>
+        <p><strong>${producto.nombre}</strong></p>
+        <p><strong>$${producto.precio_venta}</strong></p>
+        <p><small>${producto.piezas} piezas</small></p>
+      `;
+
+      card.addEventListener('click', () => {
+        mostrarModalProducto(producto);
+      });
+
+      productsContainer.appendChild(card);
+    });
+  }
+}
+
 
   function mostrarModalProducto(producto) {
     modalImg.src = producto.imagen_url;

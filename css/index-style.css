@@ -38,6 +38,25 @@ header {
   object-fit: contain;
 }
 
+.logo-empresa-grande {
+  width: 160px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.ohana-header {
+  text-align: center;
+  background-color: #fff;
+  padding: 20px 10px 10px;
+}
+
+.ohana-frase {
+  font-size: 16px;
+  font-style: italic;
+  color: #444;
+  margin-bottom: 10px;
+}
+
 #menu-toggle {
   font-size: 24px;
   width: 24px;
@@ -285,95 +304,117 @@ header {
   cursor: pointer;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- SELECT DE CATEGORÍAS --- */
-#filtro-categorias {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+/* --- CATEGORÍAS SCROLL --- */
+.categorias-scroll {
+  display: flex;
+  overflow-x: auto;
   background-color: #ffffff;
-  border: 1px solid #ccc;
   padding: 10px 14px;
-  font-size: 15px;
-  border-radius: 12px;
-  margin-top: 10px;
-  color: #333;
-  font-family: inherit;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='30,50 70,90 110,50' stroke='%23888' stroke-width='15' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  width: 100%;
+  gap: 12px;
+  border-bottom: 1px solid #ddd;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 18px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
 }
 
-#filtro-categorias:focus {
-  outline: none;
-  border-color: #7a003c;
-  box-shadow: 0 0 0 2px rgba(122, 0, 60, 0.3);
+.categorias-scroll::-webkit-scrollbar {
+  display: none;
 }
-/* --- DESKTOP (pantallas grandes, desde 1025px) --- */
-@media (min-width: 1025px) {
-  #filtro-categorias {
-    width: 200px;
-  }
 
+.categoria-btn {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #f1f1f1;
+  font-size: 14px;
+  border: none;
+  white-space: nowrap;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: background-color 0.2s;
+}
+
+.categoria-btn:hover,
+.categoria-btn.activa {
+  background-color: #7a003c;
+  color: white;
+}
+
+/* --- MÓVIL --- */
+@media (max-width: 600px) {
   .products {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 24px;
-    padding: 10px;
-    margin-top: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 
   .product-card {
-    height: 320px;
-  }
-}
-
-/* --- TABLET: Carrusel con 4 visibles --- */
-@media (max-width: 1024px) {
-  .products {
-    display: block;
-    padding: 10px;
-    margin-top: 20px;
+    height: auto;
   }
 
   .carousel-row {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 14px;
-    margin-bottom: 25px;
-    padding-left: 14px;
-    width: 100%;
-  }
-
-  .carousel-row::-webkit-scrollbar {
     display: none;
-  }
-
-  .carousel-row .product-card {
-    flex: 0 0 25%;
-    max-width: 25%;
-    min-width: 200px;
-    scroll-snap-align: start;
-    height: auto;
   }
 }
 
-/* --- MÓVIL: Carrusel con 1 o 2 visibles --- */
-@media (max-width: 600px) {
-  .carousel-row .product-card {
-    flex: 0 0 80%;
-    max-width: 80%;
-    min-width: 250px;
+/* Ajustes responsivos para logo y frase */
+.ohana-header {
+  text-align: center;
+  background-color: #fff;
+  padding: 16px 10px 10px;
+}
+
+.logo-empresa-grande {
+  max-width: 140px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.ohana-frase {
+  font-size: 14px;
+  font-style: italic;
+  color: #333;
+  margin: 0 auto 8px;
+  padding: 0 12px;
+  max-width: 90%;
+  line-height: 1.4;
+}
+
+/* Estilo circular para las categorías */
+.categoria-btn {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  border: none;
+  font-size: 12px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: normal;
+  padding: 8px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.categoria-btn:hover,
+.categoria-btn.activa {
+  background-color: #7a003c;
+  color: white;
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .logo-empresa-grande {
+    max-width: 100px;
+  }
+
+  .ohana-frase {
+    font-size: 13px;
   }
 }

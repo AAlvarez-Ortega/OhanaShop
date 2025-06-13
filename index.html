@@ -1,92 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ohana Shop</title>
   <link rel="stylesheet" href="css/footer.css" />
-  <link rel="stylesheet" href="css/modal-producto.css">
-  <link rel="stylesheet" href="css/index-style.css">
-  <!-- Carga Supabase UMD antes del script -->
+  <link rel="stylesheet" href="css/modal-producto.css" />
+  <link rel="stylesheet" href="css/index-style.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="JS/auth.js" type="module"></script>
   <script src="JS/modalProducto.js" type="module"></script>
   <script src="JS/index.js" type="module"></script>
-
-
-
 </head>
 <body>
 
+  <!-- 🔝 Encabezado superior -->
   <header>
-    <img src="img/menu.png" alt="Logo Ohana" id="menu-toggle" class="logo-toggle" title="Abrir menú" />
+    <img src="img/menu.png" alt="Menú" id="menu-toggle" class="logo-toggle" title="Abrir menú" />
     <div class="user-container">
       <div id="cart-icon" title="Ver carrito">🛒</div>
       <span class="login-text">Inicio de sesión</span>
       <div id="user-icon"></div>
     </div>
-
   </header>
 
-  <!-- Menú flotante de usuario -->
+  <!-- 💙 Logo + Frase + Categorías -->
+  <div class="ohana-header">
+    <img src="img/logo.png" alt="Logo OhanaShop" class="logo-empresa-grande" />
+    <p class="ohana-frase">"Ohana significa familia. Y tu carrito también cuenta."</p>
+
+    <!-- Scroll horizontal de categorías en forma circular -->
+    <div class="categorias-scroll" id="barra-categorias">
+      <!-- JS agregará dinámicamente las categorías aquí -->
+    </div>
+  </div>
+
+  <!-- 👤 Menú flotante de usuario -->
   <div class="floating-user-menu" id="floating-user-menu">
     <!-- Se llenará dinámicamente con JS -->
   </div>
 
+  <!-- 🛒 Modal de producto -->
+  <div id="modal-producto" class="modal-producto oculto">
+    <div class="modal-contenido">
+      <span class="cerrar-modal" id="cerrar-modal">✖</span>
+      <div class="modal-img">
+        <img id="modal-img" src="" alt="Producto" />
+      </div>
+      <h2 id="modal-nombre">Nombre del producto</h2>
+      <p id="modal-descripcion">Descripción del producto</p>
+      <p><strong>Precio:</strong> $<span id="modal-precio"></span></p>
+      <p><strong>Stock:</strong> <span id="modal-stock"></span> pz</p>
 
-  <!-- 🔍 Modal de producto -->
-<div id="modal-producto" class="modal-producto oculto">
-  <div class="modal-contenido">
-    <span class="cerrar-modal" id="cerrar-modal">✖</span>
-    <div class="modal-img">
-      <img id="modal-img" src="" alt="Producto" />
+      <label for="modal-cantidad">Pz:</label>
+      <input type="number" id="modal-cantidad" min="1" value="1" />
+
+      <button id="btn-agregar-carrito" disabled>🛒 Agregar al carrito</button>
+      <p id="modal-msg" class="msg-sesion oculto">Inicia sesión para comprar</p>
     </div>
-    <h2 id="modal-nombre">Nombre del producto</h2>
-    <p id="modal-descripcion">Descripción del producto</p>
-    <p><strong>Precio:</strong> $<span id="modal-precio"></span></p>
-    <p><strong>Stock:</strong> <span id="modal-stock"></span> pz</p>
-    
-    <label for="modal-cantidad">Pz:</label>
-    <input type="number" id="modal-cantidad" min="1" value="1" />
-    
-    <button id="btn-agregar-carrito" disabled>
-      🛒 Agregar al carrito
-    </button>
-    <p id="modal-msg" class="msg-sesion oculto">Inicia sesión para comprar</p>
   </div>
-</div>
 
-
-  <!-- Menú lateral -->
+  <!-- 📋 Menú lateral -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h3>Menú</h3>
       <button id="menu-close" title="Cerrar menú">←</button>
     </div>
-    
-    
-      <!-- Botones visibles solo para administrador -->
+
+    <!-- Botones visibles solo para administrador -->
     <button class="menu-btn" id="btn-nuevo-producto" style="display: none;">Nuevo Producto</button>
     <button class="menu-btn" id="btn-almacen" style="display: none;">Almacén</button>
     <button class="menu-btn" id="btn-categorias" style="display: none;">Categorías</button>
     <button class="menu-btn" id="btn-ventas" style="display: none;">Ventas</button>
 
-
-      <!-- Combo box visible solo para clientes -->
-      <select id="filtro-categorias" style="display: none;">
-        <option value="">Todas las categorías</option>
-      </select>
-
-   
+    <!-- Combo box visible solo para clientes -->
+    <select id="filtro-categorias" style="display: none;">
+      <option value="">Todas las categorías</option>
+    </select>
   </aside>
 
+  <!-- 🧾 Productos -->
   <main class="main">
     <section class="products">
       <!-- Aquí se renderizan los productos desde JS -->
     </section>
   </main>
 
-<script src="JS/footer.js" type="module"></script>
-
+  <script src="JS/footer.js" type="module"></script>
 </body>
 </html>
