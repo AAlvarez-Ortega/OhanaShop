@@ -7,7 +7,7 @@ body {
 
 /* CABECERA */
 header {
-  background-color: #F5F1DA;
+  background-color: #7834ff;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -17,13 +17,14 @@ header {
 header h1 {
   font-size: 20px;
   margin: 0 auto;
-  color: #333;
+  color: #ffffff;
   font-weight: bold;
 }
 
 header button {
   font-size: 24px;
   background: none;
+  color: white;
   border: none;
   cursor: pointer;
 }

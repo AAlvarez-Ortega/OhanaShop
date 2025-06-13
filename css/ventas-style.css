@@ -3,15 +3,46 @@ body {
   font-family: sans-serif;
   background: #f6f6f6;
 }
+.boton-volver {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: none;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s ease;
+}
 
 .ventas-header {
-  background: #7a003c;
+  position: relative;
+  background-color: #7a00d1;
+  padding: 20px;
   color: white;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center; /* 🔥 centra el texto */
 }
+
+.ventas-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.acciones-header {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
 
 .acciones-header button {
   background: white;
@@ -21,6 +52,10 @@ body {
   font-size: 20px;
   cursor: pointer;
 }
+.icono-blanco i {
+  color: white !important;
+}
+
 
 .filtros {
   display: flex;
@@ -91,7 +126,7 @@ body {
 }
 
 #btn-vender {
-  background: #7a003c;
+  background: #7a00d1;
   color: white;
   padding: 10px 16px;
   border: none;
@@ -134,7 +169,7 @@ body {
   right: 16px;
   cursor: pointer;
   font-size: 18px;
-  color: #555;
+  color: #7a00d1;
 }
 
 .oculto {

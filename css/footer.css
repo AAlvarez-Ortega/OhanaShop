@@ -12,11 +12,11 @@ main {
 
 /* Footer siempre al fondo */
 footer {
-  background-color: #f5f1da;
-  color: #333;
+  background-color: #7834ff;
+  color: #ffffff;
   text-align: center;
   padding: 12px 0;
   font-size: 14px;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -2px 4px rgba(255, 255, 255, 0.05);
   width: 100%;
 }

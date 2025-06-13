@@ -74,6 +74,14 @@ document.getElementById('cerrar-modal').addEventListener('click', () => {
   modalProducto.classList.add('oculto');
 });
 
+// Nueva funcionalidad: cerrar modal al hacer clic fuera del contenido
+modalProducto.addEventListener('click', (e) => {
+  const modalContenido = document.querySelector('.modal-contenido');
+  if (!modalContenido.contains(e.target)) {
+    modalProducto.classList.add('oculto');
+  }
+});
+
 filtroCategorias.addEventListener('change', renderProductos);
 buscarNombre.addEventListener('input', renderProductos);
 

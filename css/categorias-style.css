@@ -15,11 +15,12 @@ html, body {
 
 /* --- ENCABEZADO --- */
 .topbar {
-  background-color: #f5f1da;
+  background-color: #7834ff;
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(252, 252, 252, 0.05);
+  
 }
 
 .topbar button {
@@ -28,11 +29,33 @@ html, body {
   font-size: 20px;
   margin-right: 10px;
   cursor: pointer;
+  color: white;
 }
+.icono-blanco {
+  background-color: #ffffff;       /* O el color que prefieras */
+  color: rgb(255, 255, 255) !important;         /* ← fuerza el blanco */
+  font-size: 28px;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.icono-blanco:hover {
+  transform: scale(1.1);
+  background-color: #000000;
+}
+
 
 .topbar h1 {
   font-size: 20px;
-  color: #333;
+  color: #ffffff;
   flex: 1;
   text-align: center;
 }
@@ -58,12 +81,12 @@ form#form-categoria {
   border-radius: 10px;
   border: none;
   background-color: #f3f3f3;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
 }
 
 #form-categoria button {
-  background-color: #7A003C;
-  color: white;
+  background-color: #7834ff;;
+  color: rgb(255, 255, 255);
   font-size: 16px;
   padding: 12px;
   border: none;
@@ -169,7 +192,7 @@ form#form-categoria {
 }
 
 #btn-editar {
-  background-color: #7A003C;
+  background-color: #7834ff;
   color: white;
 }
 

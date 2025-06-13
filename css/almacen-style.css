@@ -8,20 +8,46 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f9f9fb;
-  color: #333;
+  color: #ffffff;
 }
 
 /* --- HEADER --- */
 header {
-  background-color: #f5f1da;
+  background-color: #7834ff;
   padding: 16px;
   text-align: center;
 }
+.boton-volver {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  color: #fbfbfb;
+  box-shadow: none;
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boton-volver:hover {
+  transform: scale(1.05);
+}
+
+
+
 
 header h2 {
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 8px;
+
 }
 
 .resumen-almacen {
@@ -31,7 +57,7 @@ header h2 {
   gap: 10px;
   font-size: 15px;
   font-weight: bold;
-  color: #111;
+  color: #ffffff;
 }
 
 /* --- FILTROS --- */
@@ -129,7 +155,7 @@ header h2 {
   max-width: 360px;
   text-align: center;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px #7834ff;
 }
 
 .modal-imagen img {
@@ -151,7 +177,7 @@ header h2 {
 }
 
 #btn-agregar-stock {
-  background-color: #7A003C;
+  background-color: #7834ff;
   color: white;
   border: none;
   padding: 10px 18px;
