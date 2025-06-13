@@ -108,16 +108,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
 // Cargar filtro de categorías (solo para clientes)
+// Mostrar combo box solo para clientes
 if (usuario?.rol !== 'administrador') {
-  // Mostrar el combo box original
   if (filtroCategorias) {
     filtroCategorias.style.display = 'block';
 
     const { data: categorias, error } = await supabase.from('categorias').select('id, nombre');
 
     if (!error && categorias) {
-      // --- COMBOBOX CLÁSICO ---
-      filtroCategorias.innerHTML = `<option value="todos">Todas las categorías</option>`;
+      filtroCategorias.innerHTML = `<option value="todo">Todas las categorías</option>`;
       categorias.forEach(cat => {
         const option = document.createElement('option');
         option.value = cat.id;
@@ -129,41 +128,46 @@ if (usuario?.rol !== 'administrador') {
         const categoriaSeleccionada = e.target.value;
         cargarProductos(categoriaSeleccionada === 'todos' ? null : categoriaSeleccionada);
       });
-
-      // --- BARRA SCROLLABLE ---
-      const barraCategorias = document.getElementById('barra-categorias');
-      if (barraCategorias) {
-        barraCategorias.innerHTML = '';
-
-        // Botón "Todas"
-        const btnTodas = document.createElement('button');
-        btnTodas.classList.add('categoria-btn', 'activa');
-        btnTodas.textContent = 'Todas';
-        btnTodas.dataset.id = 'todos';
-        barraCategorias.appendChild(btnTodas);
-
-        // Botones de cada categoría
-        categorias.forEach(cat => {
-          const btn = document.createElement('button');
-          btn.classList.add('categoria-btn');
-          btn.textContent = cat.nombre;
-          btn.dataset.id = cat.id;
-          barraCategorias.appendChild(btn);
-        });
-
-        // Clic en botones de barra scrollable
-        barraCategorias.addEventListener('click', (e) => {
-          if (e.target.classList.contains('categoria-btn')) {
-            document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('activa'));
-            e.target.classList.add('activa');
-            const id = e.target.dataset.id;
-            cargarProductos(id === 'todos' ? null : id);
-          }
-        });
-      }
     }
   }
 }
+
+// Mostrar barra horizontal de categorías PARA TODOS
+const { data: categoriasScroll, error: catError } = await supabase.from('categorias').select('id, nombre');
+
+if (!catError && categoriasScroll) {
+  const barraCategorias = document.getElementById('barra-categorias');
+  if (barraCategorias) {
+    barraCategorias.innerHTML = '';
+
+    // Botón "Todas"
+    const btnTodas = document.createElement('button');
+    btnTodas.classList.add('categoria-btn', 'activa');
+    btnTodas.textContent = 'Toda ohana Shop';
+    btnTodas.dataset.id = 'todos';
+    barraCategorias.appendChild(btnTodas);
+
+    // Botones de cada categoría
+    categoriasScroll.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.classList.add('categoria-btn');
+      btn.textContent = cat.nombre;
+      btn.dataset.id = cat.id;
+      barraCategorias.appendChild(btn);
+    });
+
+    // Clic en botones de la barra
+    barraCategorias.addEventListener('click', (e) => {
+      if (e.target.classList.contains('categoria-btn')) {
+        document.querySelectorAll('.categoria-btn').forEach(b => b.classList.remove('activa'));
+        e.target.classList.add('activa');
+        const id = e.target.dataset.id;
+        cargarProductos(id === 'todos' ? null : id);
+      }
+    });
+  }
+}
+
 
 
   await cargarProductos();
