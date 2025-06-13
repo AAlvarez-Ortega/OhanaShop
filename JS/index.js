@@ -167,7 +167,6 @@ if (usuario?.rol !== 'administrador') {
 
 
   await cargarProductos();
-
   async function cargarProductos(filtroCategoria = null) {
   let query = supabase
     .from('productos')
@@ -187,6 +186,10 @@ if (usuario?.rol !== 'administrador') {
       card.classList.add('product-card');
       card.style.cursor = 'pointer';
 
+      if (producto.piezas === 0) {
+        card.classList.add('agotado');
+      }
+
       card.innerHTML = `
         <div class="image-container">
           <img src="${producto.imagen_url}" alt="${producto.nombre}" />
@@ -194,6 +197,7 @@ if (usuario?.rol !== 'administrador') {
         <p><strong>${producto.nombre}</strong></p>
         <p><strong>$${producto.precio_venta}</strong></p>
         <p><small>${producto.piezas} piezas</small></p>
+        ${producto.piezas === 0 ? `<div class="etiqueta-agotado">Agotado</div>` : ''}
       `;
 
       card.addEventListener('click', () => {
@@ -204,6 +208,10 @@ if (usuario?.rol !== 'administrador') {
     });
   }
 }
+
+
+  
+
 
 
   function mostrarModalProducto(producto) {

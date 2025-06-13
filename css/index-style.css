@@ -317,7 +317,9 @@ header {
   scroll-padding-left: 18px;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
+  justify-content: flex-start; /* Se sobrescribirá en desktop con "center" */
 }
+
 
 .categorias-scroll::-webkit-scrollbar {
   display: none;
@@ -418,4 +420,33 @@ header {
   .ohana-frase {
     font-size: 13px;
   }
+}
+@media (min-width: 1025px) {
+  .categorias-scroll {
+    justify-content: center;
+  }
+}
+
+/* Estado AGOTADO */
+.product-card.agotado {
+  opacity: 0.4;
+  position: relative;
+  pointer-events: none;
+  filter: grayscale(100%);
+}
+
+.etiqueta-agotado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(122, 0, 60, 0.85);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
