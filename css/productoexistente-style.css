@@ -9,14 +9,17 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background-color: #F5F1DA;
+  background-color: #7834ff;
 }
 
 .header-producto h2 {
   margin: 0;
+  color: white;
+  text-align: center;
 }
 
 .acciones button {
+  color: white;
   background: none;
   border: none;
   font-size: 22px;
@@ -99,7 +102,7 @@ height: 1.5;
 }
 
 .modal-contenido button {
-  background-color: #7a003c;
+  background-color: #7834ff;
   color: white;
   border: none;
   padding: 10px 16px;
@@ -137,4 +140,24 @@ height: 1.5;
     max-width: 100%;
     height: auto;
   }
+}
+/* Almacén: al final de tu CSS */
+.btn-back {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+/* Si quieres separarlo un poco del título */
+.header-producto {
+  display: flex;
+  align-items: center;
+}
+
+.header-producto .acciones {
+  margin-left: auto;
 }

@@ -4,15 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Producto Existente</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-z...tuHash..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="css/productoexistente-style.css" />
 </head>
 <body>
   <header class="header-producto">
+      <button 
+        id="btn-back" 
+        class="btn-back" 
+        title="Volver a Almacén" 
+        onclick="window.location.href='almacen.html'">
+        <i class="fas fa-arrow-left"></i>
+      </button>
     <h2>Producto</h2>
     <div class="acciones">
-      <button id="btn-add" title="Agregar stock">➕</button>
-      <button id="btn-edit" title="Editar">✏️</button>
-      <button id="btn-delete" title="Eliminar">🗑️</button>
+      <button id="btn-add" title="Agregar stock">+</button>
+      <button id="btn-edit" title="Editar">✏︎</button>
+      <button id="btn-delete" title="Eliminar">🗑︎</button>
     </div>
   </header>
 
