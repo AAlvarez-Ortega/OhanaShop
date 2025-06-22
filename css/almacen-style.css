@@ -234,3 +234,17 @@ header h2 {
   }
 }
 
+/* Agrega esto al final de almacen-style.css */
+.tarjeta-mosaico.agotado {
+  background-color: #ffdddd; /* Rojo claro; ajústalo al tono que prefieras */
+}
+/* Forzar texto oscuro dentro del modal */
+.modal-producto .contenido-modal {
+  color: #333333;
+}
+
+/* (Opcional) si quieres aún más contraste */
+.modal-producto .contenido-modal h3,
+.modal-producto .contenido-modal p {
+  color: #222222;
+}
