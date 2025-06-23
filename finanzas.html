@@ -26,6 +26,22 @@
   </header>
 
   <main class="finanzas-main">
+      <!-- 🔍 Filtros de fecha -->
+        <div class="filtros-dates">
+            <label>
+            Desde:
+            <input type="date" id="fecha-inicio" />
+            </label>
+            <label>
+            Hasta:
+            <input type="date" id="fecha-fin" />
+            </label>
+            <button id="btn-filtrar">Filtrar</button>
+            <button id="btn-limpiar" class="btn-limpiar">Limpiar</button>
+        </div>
+
+
+
     <!-- 1) Tarjeta resumen global -->
     <section id="resumen-ventas" class="resumen-card">
       <!-- JS inyecta aquí los totales -->
