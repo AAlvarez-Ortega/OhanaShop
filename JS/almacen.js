@@ -31,9 +31,11 @@ function openModal(prod) {
   modalCodigo.textContent  = `Código de barras: ${prod.id}`;
   modalPrecio.innerHTML    = `Precio compra: $${prod.precio_compra}<br>Precio venta: $${prod.precio_venta}`;
   modalPiezas.textContent  = `Piezas: ${prod.piezas}`;
-  btnAgregarStock.onclick  = () => {
-    window.location.href = `productoexistente.html?id=${prod.id}`;
-  };
+  btnAgregarStock.onclick = () => {
+        localStorage.setItem('codigo_barras', prod.id);
+        window.location.href = 'productoexistente.html';
+      };
+
   modal.classList.remove('oculto');
 }
 
