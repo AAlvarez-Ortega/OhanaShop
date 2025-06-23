@@ -3,23 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ventas</title>
+  <title>Finanzas</title>
   <link rel="stylesheet" href="css/finanzas-style.css" />
-    <!-- Scripts --><!-- Font Awesome para íconos -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-   <script src="https://cdn.jsdelivr.net/npm/@zxing/browser@latest"></script>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
   <script type="module" src="JS/finanzas.js"></script>
 </head>
 <body>
   <!-- Botón volver al inicio -->
-<button onclick="window.location.href='index.html'" class="boton-volver" title="Volver al inicio">
-  <i class="fas fa-arrow-left"></i>
-</button>
+  <button
+    onclick="window.location.href='index.html'"
+    class="boton-volver"
+    title="Volver al inicio"
+  >
+    <i class="fas fa-arrow-left"></i>
+  </button>
 
   <header class="ventas-header">
     <h2>Finanzas</h2>
   </header>
+
+  <main class="finanzas-main">
+    <!-- 1) Tarjeta resumen global -->
+    <section id="resumen-ventas" class="resumen-card">
+      <!-- JS inyecta aquí los totales -->
+    </section>
+
+    <!-- 2) Historial de ventas agrupado por hora -->
+    <section id="ventas-horario" class="ventas-horario">
+      <!-- JS inyecta aquí las tarjetas por hora -->
+    </section>
+  </main>
 </body>
 </html>
