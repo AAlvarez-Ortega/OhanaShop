@@ -5,15 +5,26 @@ body {
 }
 
 header {
-  background-color: #F5F1DA;
+  background-color:#7834ff;
   padding: 10px;
 }
 
 .back-btn {
+   
   background: none;
+  color: #ffffff;
+  font-size: 20px;
   border: none;
-  font-size: 24px;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s ease;
 }
 
 .container {
