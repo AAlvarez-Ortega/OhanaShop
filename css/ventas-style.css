@@ -175,3 +175,31 @@ body {
 .oculto {
   display: none;
 }
+/* Tarjeta agotada */
+.producto-card.agotado {
+  background-color: #ffdddd;
+}
+
+/* Botón finanzas junto a “volver” */
+.boton-finanzas {
+  position: fixed;
+  top: 15px;
+  left: 65px; /* desplázalo según tu gusto */
+  background: none;
+  color: #ffffff;
+  font-size: 20px;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s ease;
+}
+.boton-finanzas:hover {
+  transform: scale(1.05);
+}
