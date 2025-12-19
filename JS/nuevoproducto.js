@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const supabase = window.supabase.createClient(
-    'https://qybynnifyuvbuacanlaa.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
+
+  'https://qybynnifyuvbuacanlaa.supabase.co',
+  'sb_publishable_K_PvlrO6Wgzz7baowzePTw_LV8OnThe'
   );
 
   // Elementos del formulario

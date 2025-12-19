@@ -1,9 +1,11 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.87.1';
+
 
 export const supabase = createClient(
   'https://qybynnifyuvbuacanlaa.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF5YnlubmlmeXV2YnVhY2FubGFhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0OTM1NzkxMCwiZXhwIjoyMDY0OTMzOTEwfQ.DEHEYiO2nLoG8lmjrVGAztOSeeIi2C8EL9_4IVoXUjk'
+  'sb_publishable_K_PvlrO6Wgzz7baowzePTw_LV8OnThe'
 );
+
 
 export async function obtenerUsuarioActivo() {
   const { data, error } = await supabase.auth.getUser();
