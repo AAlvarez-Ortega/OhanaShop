@@ -15,11 +15,17 @@
   <main class="container">
     <h2>Escanear nuevo producto</h2>
     <div id="scanner-container">
-      <video id="scanner" autoplay muted></video>
-    </div>
+  <video id="scanner" autoplay muted playsinline></video>
+       <!-- 🔦 Botón Flash -->
+  <button id="btn-flash" class="flash-btn" type="button" aria-label="Encender flash">
+    🔦
+  </button>
+</div>
+
+
     <input type="text" id="codigo" placeholder="O Escribe el código aquí" />
     <button id="btn-aceptar">Aceptar</button>
-
+    
   </main>
 
   <script type="module">
